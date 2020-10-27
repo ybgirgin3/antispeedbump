@@ -2,6 +2,7 @@
 import os
 import ntpath
 from threading import Thread
+from net_check import Net
 
 # kendi modülüm
 from actions_ import follow_, comment_, like_, session
@@ -32,8 +33,12 @@ like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
 
 # kesinlikle multithread gerekli
 # çünkü follow işini bitirmeden like işlemine geçmiyor
-with smart_run(session, threaded=True):
-    Thread(target = like_(like_tag_file_path)).start()
-    Thread(target = follow_(follow_tag_file_path)).start()
-    
-    #session.end(threaded_session=True)
+while Net:
+  try:
+    with smart_run(session, threaded=True):
+        Thread(target = like_(like_tag_file_path)).start()
+        Thread(target = follow_(follow_tag_file_path)).start()
+      
+        #session.end(threaded_session=True)
+  except Exception as e:
+    raise('Timeout Error')
