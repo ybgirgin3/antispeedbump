@@ -10,6 +10,8 @@ YAPILACAKLAR
 (1) [.] tamamlananları aynı aynı çalışmasını kontrol et
     [.] postları otomatik olarak gönder
     [.] gönderilere yorum yapmadan önce fotoğrafı beğen, öbür türlü bot olduğu anlaşılabilir
+    [.] instapod olayını ekle
+    [.] storileri izleme olayını hallet
 
 
 TAMAMLANANLAR
