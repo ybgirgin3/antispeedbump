@@ -1,9 +1,11 @@
 # link: https://github.com/timgrossmann/InstaPy/blob/master/DOCUMENTATION.md
-from instapy import InstaPy
+import os
+import ntpath
 
 # kendi modülüm
 from actions_ import follow_, comment_, like_
 
+"""
 # kullanıcı adı ve şifreyi gir sisteme
 session = InstaPy(username='mental_huzur',
                   password='manzaralar1234', 
@@ -11,17 +13,18 @@ session = InstaPy(username='mental_huzur',
                   )
 # giriş yap
 session.login()
-
+"""
 
 # dosya yolları
-tag_file = '/home/berkay/code/INSTAGRAM/antispeedbump/tags_for_following.txt'
+#follow_tag_file = '/home/berkay/code/INSTAGRAM/antispeedbump/follow_tag_file.txt'
+follow_tag_file_path = os.getcwd()+'/text_files/follow_tag_file.txt'
+like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
 
 
-def read_from_file(filename):
-	with(filename, 'r') as tf:
-		tags = tf.read().splitlines()
-		f.close()
-	return tags
+def read_from_file(file_path):
+	with open(file_path, 'r') as tf:
+		x = tf.read().splitlines()
+		return x
 
 
 
@@ -29,4 +32,8 @@ def read_from_file(filename):
 # almam gerekiyor
 # tag listesini okuma fonksiyonu içine yolla,
 # sonra da direk olarak follow_ içine
-follow_(read_from_file(tag_file))
+
+# kesinlikle multithread gerekli
+# çünkü follow işini bitirmeden like işlemine geçmiyor
+#follow_(read_from_file(follow_tag_file_path))
+like_(read_from_file(like_tag_file_path))

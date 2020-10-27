@@ -1,10 +1,19 @@
-# kütüphaneler çağırmaya gerek yok
-
 # follow_tag_list: liste olmalı - main.py'dan gönderilecek
+from instapy import InstaPy
+
+# kullanıcı adı ve şifreyi gir sisteme
+session = InstaPy(username='mental_huzur',
+                  password='manzaralar1234', 
+                  headless_browser=True
+                  )
+# giriş yap
+session.login()
+
+
 
 # durumları aktif et
 session.set_do_follow(enabled=True, percentage=50)
-session.set_do_comments(enabled=True, percentage=50)
+session.set_do_comment(enabled=True, percentage=50)
 session.set_do_like(enabled=True, percentage=70)
 
 # banlanmamak için supervisor aktif et
@@ -32,7 +41,8 @@ def follow_(follow_tag_list):
 
 def comment_(comments_list):
 	# gönderilerin altına yazılacak olan yorumları göster
-	session.set_comments(comments_list)
+	#session.set_comments(comments_list)
+	pass
 
 
 def like_(like_tag_list):
