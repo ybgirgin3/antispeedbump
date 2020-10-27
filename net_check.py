@@ -6,4 +6,5 @@ def Net():
   timeout = 5
 
   response = req.get(url, timeout=timeout)
+  print(f'RESPONSE: {response}')
   return True

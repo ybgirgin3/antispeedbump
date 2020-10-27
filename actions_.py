@@ -1,10 +1,11 @@
 # follow_tag_list: liste olmalı - main.py'dan gönderilecek
 from instapy import InstaPy
+from inf import USERNAME, PASSWORD
 
 
 # kullanıcı adı ve şifreyi gir sisteme
-session = InstaPy(username='mental_huzur',
-                  password='manzaralar1234', 
+session = InstaPy(username=USERNAME,
+                  password=PASSWORD, 
                   headless_browser=True,
                   disable_image_load=True,
                   )
@@ -32,6 +33,19 @@ session.set_quota_supervisor(enabled=True,
                              peak_unfollows_daily=200,
                              peak_server_calls_hourly=None,
                              peak_server_calls_daily=4700)
+
+
+session.set_relationship_bounds(enabled=True,
+				                        potency_ratio=1.34,
+                                delimit_by_numbers=True,
+                                max_followers=8500,
+                                max_following=4490,
+                                min_followers=100,
+                                min_following=56,
+                                min_posts=10,
+                                max_posts=1000)
+
+
 
 def follow_(follow_tag_list):
     session.set_do_follow(enabled=True, percentage=50)
