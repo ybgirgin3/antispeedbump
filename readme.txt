@@ -5,3 +5,4 @@
 
 [+] taglere göre resimler beğen
 [.] kişileri takip et
+[.] gönderilere yorum yapmadan önce fotoğrafı beğen, öbür türlü bot olduğu anlaşılabilir
