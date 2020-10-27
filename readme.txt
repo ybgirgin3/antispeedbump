@@ -20,7 +20,8 @@ TAMAMLANANLAR
 
 
 
-# dipnotlar
+DIPNOTLAR
+==========================
 *(1): instabot kütüphanesinde post gönderme ile ilgili bir şey bulamadım
 bu yüzden farklı lib kullanan bir script yazmak var aklımda
 
