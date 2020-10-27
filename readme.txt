@@ -7,17 +7,19 @@ YAPILACAKLAR
 
 
 --- diğer kullanıcılar ile etkileşim
-(1) [.] tamamlananları aynı aynı çalışmasını kontrol et
-    [.] postları otomatik olarak gönder
+(1) [.] postları otomatik olarak gönder
     [.] gönderilere yorum yapmadan önce fotoğrafı beğen, öbür türlü bot olduğu anlaşılabilir
     [.] instapod olayını ekle
-    [.] storileri izleme olayını hallet
+    [.] storyleri izleme olayını hallet
 
 
 TAMAMLANANLAR
 =======================
 (2) [+] taglere göre resimler beğen
     [+] kişileri takip et
+	
+    [+] tamamlananları ayrı ayrı çalışmasını kontrol et (işlemler birbirini takip ediyor aynı anda olması mümkün değil)
+
 
 
 
