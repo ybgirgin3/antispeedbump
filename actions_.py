@@ -13,7 +13,7 @@ session.login()
 
 # durumları aktif et
 session.set_do_follow(enabled=True, percentage=50)
-session.set_do_comment(enabled=True, percentage=50)
+# session.set_do_comment(enabled=True, percentage=50)
 session.set_do_like(enabled=True, percentage=70)
 
 # banlanmamak için supervisor aktif et
@@ -46,9 +46,11 @@ def comment_(comments_list):
 
 
 def like_(like_tag_list):
-	session.set_smart_hashtags(like_tag_list, limit=5, sort='random', log_tags=True)
-	session.like_by_tags(amount=10, use_smart_hashtags=True)
-	session.set_delimit_liking(enabled=True, max_likes=1005, min_likes=20)
+	hashtags = session.target_list(like_tag_list)
+	#session.set_smart_hashtags(like_tag_list, limit=5, sort='top', log_tags=True)
+	#session.like_by_tags(amount=10, use_smart_hashtags=True)
+	#session.set_delimit_liking(enabled=True, max_likes=1005, min_likes=20)
+	session.like_by_tags(hashtags, amount=10)
 
 
 

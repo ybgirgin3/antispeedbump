@@ -21,11 +21,6 @@ follow_tag_file_path = os.getcwd()+'/text_files/follow_tag_file.txt'
 like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
 
 
-def read_from_file(file_path):
-	with open(file_path, 'r') as tf:
-		x = tf.read().splitlines()
-		return x
-
 
 
 # kullanıcıları takip etmek için tagler lazım o tagleri liste olarak
@@ -36,4 +31,5 @@ def read_from_file(file_path):
 # kesinlikle multithread gerekli
 # çünkü follow işini bitirmeden like işlemine geçmiyor
 #follow_(read_from_file(follow_tag_file_path))
-like_(read_from_file(like_tag_file_path))
+like_(like_tag_file_path)
+#print(read_from_file(like_tag_file_path))

@@ -14,3 +14,7 @@
 
 *(!): instabot kütüphanesinde post gönderme ile ilgili bir şey bulamadım
 bu yüzden farklı lib kullanan bir script yazmak var aklımda
+
+lib ile ilgili olarak;
+enable ettiğimiz şeyler çağırmasak bile direk olarak onları çalıştırıyor;
+    comment enable iken default olarak içinde gelen yorumlardan yazıyor resimlerine altına
