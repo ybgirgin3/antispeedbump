@@ -1,2 +1,2 @@
-USERNAME='antispeedbump_official'
-PASSWORD='satanmetalady666'
+USERNAME='mental_huzur'
+PASSWORD='manzaralar1234'

@@ -22,6 +22,7 @@ session.login()
 #follow_tag_file = '/home/berkay/code/INSTAGRAM/antispeedbump/follow_tag_file.txt'
 follow_tag_file_path = os.getcwd()+'/text_files/follow_tag_file.txt'
 like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
+big_accounts_path = os.getcwd()+'/text_files/big_accounts.txt'
 
 
 
@@ -34,11 +35,12 @@ like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
 # kesinlikle multithread gerekli
 # çünkü follow işini bitirmeden like işlemine geçmiyor
 while Net:
-  try:
-    with smart_run(session, threaded=True):
-        Thread(target = follow_(follow_tag_file_path)).start()
-        Thread(target = like_(like_tag_file_path)).start()
+    try:
+        with smart_run(session, threaded=True):
+            Thread(target = follow_(follow_tag_file_path, big_accounts=big_accounts_path)).start()
+            Thread(target = like_(like_tag_file_path)).start()
       
-        #session.end(threaded_session=True)
-  except Exception as e:
-    raise('Timeout Error')
+    	    #session.end(threaded_session=True)
+    except Exception as e:
+        print('internet bağlantsı tekrar deneniyor')
+        Net()
