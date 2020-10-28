@@ -6,3 +6,6 @@ takip ettiği sayfaları sıradan 300 veya 500 takipçisi olan sayfalar yani bü
 
 like ettiği fotoğraflar genellikle az beğenisi olan fotoğraflar 190 beğeni vs var. hem takip için hem de beğeni için bu sayıları kontrol edip ona göre işlem yapmak lazım
 
+[29-10-2020 02:02]
+hesabıma giriş yapmıyor: ERROR Page not found
+headless_browser=True dediğim zaman hesabıma girmesi gereken yerde "page not found" hatası veriyor. githubda bununla ilgili çok issue açılmış ama bir sonuç bulunamamıs. Asıl sıkıntının programın takip etme sırasında fazla agresif olması olduğunu düşünüyorum. Bununla ilgili bir tane issue yorumu buldum. Yorumda peak_server_calls muhabbetini instagramın her yeni günde bir kere yenilediğini söylüyordu (bknz: https://github.com/timgrossmann/InstaPy/issues/4944#issuecomment-528869416) eğer adamın dediği gibi ise gündüz saat 14:00 civarı bot yeniden çalışır hale gelecek ve çalışır hale geldiyse eğer configurasyon ayarlarını yaparken cron/schedule üzerinde zamanlama işlemleri için bu 24 saatlik süreyi kesinlikle göz önünde bulundurmam lazım. çünkü dün geceki agresiflikten sonra instagram hesabıma giremedim ve şifremi değiştirmem gerekti.

@@ -6,7 +6,7 @@ from inf import USERNAME, PASSWORD
 # kullanıcı adı ve şifreyi gir sisteme
 session = InstaPy(username=USERNAME,
                   password=PASSWORD, 
-                  headless_browser=True,
+                  headless_browser=False,
                   disable_image_load=True,
                   )
 # giriş yap
@@ -23,7 +23,7 @@ session.set_quota_supervisor(enabled=True,
                              sleepyhead=True, 
                              stochastic_flow=True, 
                              notify_me=True,
-                             peak_likes_hourly=41,
+                             peak_likes_hourly=30,
                              peak_likes_daily=500,
                              peak_comments_hourly=21,
                              peak_comments_daily=240,
@@ -31,16 +31,20 @@ session.set_quota_supervisor(enabled=True,
                              peak_follows_daily=200,
                              peak_unfollows_hourly=35,
                              peak_unfollows_daily=200,
-                             peak_server_calls_hourly=None,
+                             peak_server_calls_hourly=500,
                              peak_server_calls_daily=4700)
 
 # bot aktivitesini instagramdan saklamak için belirli süreleri içerisinde bu işlemleri tekrarla
 session.set_action_delays(enabled=True,
-                          like=3,
-                          comment=5,
-                          follow=4.17,
+                          like=30,
+                          comment=29,
+                          follow=71,
                           unfollow=28,
-                          story=10)
+                          story=10,
+                          randomize=True,
+                          random_range_from=70,
+                          random_range_to=140
+                          )
 
 # gizli hesaplardan falan uzak kalma muhabbeti
 session.set_skip_users(skip_private=True,
