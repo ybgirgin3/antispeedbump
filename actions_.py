@@ -19,14 +19,14 @@ session.login()
 # banlanmamak için supervisor aktif et
 # limitler ile ilgili bilginin alındığı link: https://taplink.at/en/blog/instagram_follow_unfollow_limits_and_other_restrictions_2020.html#:~:text=In%202020%2C%20users%20are%20allowed,more%20freedom%20in%20this%20regard.
 session.set_quota_supervisor(enabled=True,
-                             sleep_after=["likes_d", "follows_d"],
+                             sleep_after=["likes", "comments_d", "follows", "unfollows", "server_calls_h"],
                              sleepyhead=True, 
                              stochastic_flow=True, 
                              notify_me=True,
                              peak_likes_hourly=41,
                              peak_likes_daily=500,
                              peak_comments_hourly=21,
-                             peak_comments_daily=182,
+                             peak_comments_daily=240,
                              peak_follows_hourly=20,
                              peak_follows_daily=200,
                              peak_unfollows_hourly=35,
@@ -34,6 +34,7 @@ session.set_quota_supervisor(enabled=True,
                              peak_server_calls_hourly=None,
                              peak_server_calls_daily=4700)
 
+# bot aktivitesini instagramdan saklamak için belirli süreleri içerisinde bu işlemleri tekrarla
 session.set_action_delays(enabled=True,
                           like=3,
                           comment=5,
@@ -41,6 +42,7 @@ session.set_action_delays(enabled=True,
                           unfollow=28,
                           story=10)
 
+# gizli hesaplardan falan uzak kalma muhabbeti
 session.set_skip_users(skip_private=True,
                        private_percentage=100,
                        skip_no_profile_pic=True,
@@ -48,7 +50,7 @@ session.set_skip_users(skip_private=True,
                        skip_non_business=False,
                        )
 
-
+# hangi tür hesapları muhattap alacağımız belirlemek
 session.set_relationship_bounds(enabled=True,
 				                potency_ratio=None,
                                 delimit_by_numbers=True,
@@ -75,22 +77,19 @@ def follow_(follow_tag_list, big_accounts = None):
 
 
 def like_(like_tag_list):
-	
-	"""
-	like için bir liste zaten lazımdı
-	"""
 	session.set_do_like(enabled=True, percentage=70)
 	hashtags = session.target_list(like_tag_list)
 
 	# delimite yokken 3 beğenili fotoğrafları beğeniyor dolayısıyla onların bana bir yararı yok
+	# az beğenili hesapları takipçilerin fazla görmeyi tercih etmediği hesaplardır diye tahmin ediyorum
 	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=2000)
 	session.like_by_tags(hashtags, amount=100)
 
 
 
 def comment_(comments_list):
-    # session.set_do_comment(enabled=True, percentage=50)
-	# gönderilerin altına yazılacak olan yorumları göster
-	#session.set_comments(comments_list)
-	pass
+    session.set_do_comment(enabled=True, percentage=50)
+    session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
+    # gönderilerin altına yazılacak olan yorumları göster
+    session.set_comments(comments_list)
 
