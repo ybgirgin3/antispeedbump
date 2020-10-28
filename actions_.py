@@ -34,16 +34,20 @@ session.set_quota_supervisor(enabled=True,
                              peak_server_calls_hourly=None,
                              peak_server_calls_daily=4700)
 
+session.set_action_delays(enabled=True,
+                          like=3,
+                          comment=5,
+                          follow=4.17,
+                          unfollow=28,
+                          story=10)
 
 session.set_relationship_bounds(enabled=True,
-				                        potency_ratio=1.34,
+				                potency_ratio=None,
                                 delimit_by_numbers=True,
-                                max_followers=8500,
-                                max_following=4490,
+                                max_followers=100000,
                                 min_followers=100,
-                                min_following=56,
-                                min_posts=10,
-                                max_posts=1000)
+                                min_posts=5,
+                                max_posts=100000000000)
 
 
 
