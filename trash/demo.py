@@ -11,6 +11,6 @@ bot.login(username = "mental_huzur",
 # directory where this Python code 
 # is located else you will have 
 # to provide full path for the photo 
-bot.upload_photo("post1.jpg", 
+bot.upload_photo("post3.jpg", 
 				caption ="hello bot") 
 

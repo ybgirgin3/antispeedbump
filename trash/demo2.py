@@ -1,5 +1,6 @@
 import os
 import time 
+import random
 from instabot import Bot 
 
 
@@ -15,14 +16,10 @@ bot.login(username = "mental_huzur",
 
 # find images and get their names a list
 post_path = '/home/berkay/code/INSTAGRAM/antispeedbump/posts'
-posts = []
-for post in os.listdir(post_path):
-  posts.append(post)
 
 
-
-for post in posts:
-  bot.upload_photo(post,
-                  caption = os.path.splitext(post)[0]) 
-  time.sleep(2)
+#print(os.listdir(post_path)) -> returns list
+post = random.choice(os.listdir(post_path))
+bot.upload_photo(post, caption='hi bot 2')
+os.replace(post_path, post_path+'/sent')
 

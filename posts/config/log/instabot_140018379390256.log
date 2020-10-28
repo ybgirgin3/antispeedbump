@@ -1,0 +1,27 @@
+2020-10-28 22:08:57,486 - instabot version: 0.117.0 (bot) - INFO - Instabot version: 0.117.0 Started
+2020-10-28 22:08:57,487 - instabot version: 0.117.0 (bot) - DEBUG - Bot imported from /home/berkay/miniconda3/envs/antispeed/lib/python3.8/site-packages/instabot/bot/bot.py
+2020-10-28 22:08:57,487 - instabot version: 0.117.0 (api_login) - DEBUG - Loading cookies
+2020-10-28 22:08:57,487 - instabot version: 0.117.0 (api_login) - DEBUG - Loading uuids
+2020-10-28 22:08:57,487 - instabot version: 0.117.0 (api_login) - INFO - Recovery from /home/berkay/code/INSTAGRAM/antispeedbump/posts/config/mental_huzur_uuid_and_cookie.json: COOKIE True - UUIDs True - TIMING, DEVICE and ...
+- user-agent=Instagram 117.0.0.28.123 Android (28/9.0; 420dpi; 1080x1920; OnePlus; ONEPLUS A3003; OnePlus3; qcom; en_US; 180322800)
+- phone_id=68bd6821-ba07-43eb-ba2f-25d59f88cf10
+- uuid=ecb71982-dddf-4a93-9cc2-93f02b028d04
+- client_session_id=8d572374-fef2-48a8-9e8c-a98593000b12
+- device_id=android-12ea9e527f265191
+2020-10-28 22:08:57,487 - instabot version: 0.117.0 (api_login) - INFO - LOGIN FLOW! Just logged-in: False
+2020-10-28 22:08:58,997 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: feed/timeline/ returned response: <Response [200]>
+2020-10-28 22:09:01,428 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: feed/reels_tray/ returned response: <Response [200]>
+2020-10-28 22:09:02,450 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: direct_v2/ranked_recipients/ returned response: <Response [200]>
+2020-10-28 22:09:04,181 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: direct_v2/ranked_recipients/ returned response: <Response [200]>
+2020-10-28 22:09:05,042 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: direct_v2/inbox/ returned response: <Response [200]>
+2020-10-28 22:09:05,575 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: direct_v2/get_presence/ returned response: <Response [200]>
+2020-10-28 22:09:06,801 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: news/inbox/?limited_activity=true&show_su=true returned response: <Response [200]>
+2020-10-28 22:09:08,856 - instabot version: 0.117.0 (api) - DEBUG - GET to endpoint: users/profile_notice/ returned response: <Response [200]>
+2020-10-28 22:09:10,467 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: discover/explore/ returned response: <Response [200]>
+2020-10-28 22:09:10,470 - instabot version: 0.117.0 (api) - INFO - Logged-in successfully as 'mental_huzur'!
+2020-10-28 22:09:10,470 - instabot version: 0.117.0 (bot_checkpoint) - DEBUG - Loading Checkpoint file from: /home/berkay/code/INSTAGRAM/antispeedbump/posts/config/mental_huzur.checkpoint
+2020-10-28 22:09:34,707 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: media/configure/? returned response: <Response [200]>
+2020-10-28 22:09:35,198 - instabot version: 0.117.0 (api) - DEBUG - POST to endpoint: qe/expose/ returned response: <Response [200]>
+2020-10-28 22:09:35,198 - instabot version: 0.117.0 (bot_photo) - INFO - Photo 'post3.jpg' is uploaded.
+2020-10-28 22:09:35,198 - instabot version: 0.117.0 (bot_checkpoint) - DEBUG - Saving Checkpoint file to: /home/berkay/code/INSTAGRAM/antispeedbump/posts/config/mental_huzur.checkpoint
+2020-10-28 22:09:35,199 - instabot version: 0.117.0 (bot) - INFO - Total requests: 33
