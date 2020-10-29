@@ -1,13 +1,15 @@
 # follow_tag_list: liste olmalı - main.py'dan gönderilecek
 from instapy import InstaPy
 from inf import USERNAME, PASSWORD
+import random
 
+wait_time = random.randint(60, 900)
 
 # kullanıcı adı ve şifreyi gir sisteme
 session = InstaPy(username=USERNAME,
                   password=PASSWORD, 
                   headless_browser=False,
-                  disable_image_load=True,
+                  #disable_image_load=True,
                   )
 # giriş yap
 session.login()
@@ -19,7 +21,7 @@ session.login()
 # banlanmamak için supervisor aktif et
 # limitler ile ilgili bilginin alındığı link: https://taplink.at/en/blog/instagram_follow_unfollow_limits_and_other_restrictions_2020.html#:~:text=In%202020%2C%20users%20are%20allowed,more%20freedom%20in%20this%20regard.
 session.set_quota_supervisor(enabled=True,
-                             sleep_after=["likes", "comments_d", "follows", "unfollows", "server_calls_h"],
+                             sleep_after=["likes", "comments_d", "follows_h", "unfollows_h", "server_calls_h"],
                              sleepyhead=True, 
                              stochastic_flow=True, 
                              notify_me=True,
@@ -65,35 +67,60 @@ session.set_relationship_bounds(enabled=True,
 
 
 
-def follow_(follow_tag_list, big_accounts = None):
-    session.set_do_follow(enabled=True, percentage=50)
-    foll_hash = session.target_list(follow_tag_list)
-    session.follow_by_tags(foll_hash, amount=10)
+def follow_(follow_tag_list = None, big_accounts = None):
+	session.set_do_follow(enabled=True, percentage=50)
 
-    if big_account:
-        big_accounts = session.target_list(big_accounts)
+	if follow_tag_list is not None:
+		foll_hash = session.target_list(follow_tag_list)
+		session.follow_by_tags(foll_hash, amount=10)
+		time.sleep(wait_time)
+
+	if big_accounts is not None:
+		big_accounts = session.target_list(big_accounts)
 		# kullanıcını takipçilerinden takip et
-        session.follow_user_followers(big_accounts, amount=100, randomize=True)
+		session.follow_user_followers(big_accounts, amount=100, randomize=True)
+		time.sleep(wait_time)
+
 		# takipçinin gönderilerini beğenenlerden takip et
-        session.follow_likers(big_accounts, photos_grab_amount = 5, follow_likers_per_photo = 10, randomize=True, sleep_delay=600, interact=False)
+		session.follow_likers(big_accounts, photos_grab_amount = 5, follow_likers_per_photo = 10, randomize=True, sleep_delay=600, interact=False)
+		time.sleep(wait_time)
 		# yorum atanları takip et
-        session.follow_commenters(big_accounts, amount=100, daysold=365, max_pic = 60, sleep_delay=600, interact=False)
+		session.follow_commenters(big_accounts, amount=100, daysold=365, max_pic = 60, sleep_delay=600, interact=False)
+		time.sleep(wait_time)
+
+    # unfollowing
 
 
-def like_(like_tag_list):
+
+
+def like_and_comment(like_tag_list, comments_list):
+
+	# like jog
 	session.set_do_like(enabled=True, percentage=70)
 	hashtags = session.target_list(like_tag_list)
+	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
+
+	session.like_by_tags(hashtags, amount=100)
+	time.sleep(wait_time)
+
+	session.like_by_feed(amount=50, randomize=True, unfollow=True, interact=True)
+	time.sleep(wait_time)
+
+
+	# comment job
+	session.set_do_comment(enabled=True, percentage=50)
+	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
+	session.set_comments(comments_list)
+	time.sleep(wait_time)
+
+
 
 	# delimite yokken 3 beğenili fotoğrafları beğeniyor dolayısıyla onların bana bir yararı yok
 	# az beğenili hesapları takipçilerin fazla görmeyi tercih etmediği hesaplardır diye tahmin ediyorum
-	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=2000)
-	session.like_by_tags(hashtags, amount=100)
-
-
-
-def comment_(comments_list):
-    session.set_do_comment(enabled=True, percentage=50)
-    session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
     # gönderilerin altına yazılacak olan yorumları göster
-    session.set_comments(comments_list)
 
+
+def unfollowing():
+	session.set_dont_unfollow_active_users(enabled=True, posts=5)
+	session.unfollow_users(amount=126, nonFollowers=True, style="RANDOM", unfollow_after=42*60*60, sleep_delay=655)
+	time.sleep(wait_time)

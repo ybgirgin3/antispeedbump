@@ -1,11 +1,12 @@
 # link: https://github.com/timgrossmann/InstaPy/blob/master/DOCUMENTATION.md
 import os
+import sys
 import ntpath
 from threading import Thread
 from net_check import Net
 
 # kendi modülüm
-from actions_ import follow_, comment_, like_, session
+from actions_ import follow_, like_and_comment, session
 from instapy import smart_run
 
 """
@@ -38,7 +39,20 @@ big_accounts_path = os.getcwd()+'/text_files/big_accounts.txt'
 
 with smart_run(session, threaded=True):
 	#Thread(target = follow_(follow_tag_file_path, big_accounts=big_accounts_path)).start()
-	Thread(target = like_(like_tag_file_path)).start()
-	Thread(target = comment_(comment_path)).start()
+	Thread(target = follow_(big_accounts=big_accounts_path)).start()
+	print('takip işi bitti 15 dk bekleme süresi başladı')
+	time.sleep(900)
+
+	Thread(target = like_and_comment(like_tag_file_path, comment_path)).start()
+	print('like işi bitti 15 dk bekleme süresi başladı')
+	time.sleep(900)
+
+	Thread(target = like_and_comment(like_tag_file_path, comment_path)).start()
+	print('tüm işlemler bitti')
+	print('bot kapanıyor')
+	sys.exit()
+
+
+
       
 	#session.end(threaded_session=True)
