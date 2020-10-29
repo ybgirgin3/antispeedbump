@@ -8,7 +8,7 @@ wait_time = random.randint(60, 900)
 # kullanıcı adı ve şifreyi gir sisteme
 session = InstaPy(username=USERNAME,
                   password=PASSWORD, 
-                  headless_browser=False,
+                  headless_browser=True,
                   #disable_image_load=True,
                   )
 # giriş yap
@@ -69,6 +69,13 @@ session.set_relationship_bounds(enabled=True,
 
 def follow_(follow_tag_list = None, big_accounts = None):
 	session.set_do_follow(enabled=True, percentage=50)
+	# gizli hesaplardan falan uzak kalma muhabbeti
+	session.set_skip_users(skip_private=True,
+                       private_percentage=100,
+                       skip_no_profile_pic=True,
+                       skip_business=False,
+                       skip_non_business=False,
+                       )
 
 	if follow_tag_list is not None:
 		foll_hash = session.target_list(follow_tag_list)
@@ -97,6 +104,8 @@ def like_and_comment(like_tag_list, comments_list):
 
 	# like jog
 	session.set_do_like(enabled=True, percentage=70)
+	session.set_do_comment(enabled=True, percentage=50)
+
 	hashtags = session.target_list(like_tag_list)
 	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
 
@@ -108,9 +117,9 @@ def like_and_comment(like_tag_list, comments_list):
 
 
 	# comment job
-	session.set_do_comment(enabled=True, percentage=50)
+	comments = session.target_list(comments_list)
 	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
-	session.set_comments(comments_list)
+	session.set_comments(comments)
 	time.sleep(wait_time)
 
 
