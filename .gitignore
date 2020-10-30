@@ -1,3 +1,8 @@
 *.swp
 .vscode/
 __pycache__/
+trash/
+trashs/
+araba_postları/
+config/
+sent_photos

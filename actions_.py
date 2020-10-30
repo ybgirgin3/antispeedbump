@@ -2,13 +2,15 @@
 from instapy import InstaPy
 from inf import USERNAME, PASSWORD
 import random
+import time
+
 
 wait_time = random.randint(60, 900)
 
 # kullanıcı adı ve şifreyi gir sisteme
 session = InstaPy(username=USERNAME,
                   password=PASSWORD, 
-                  headless_browser=True,
+                  headless_browser=False,
                   #disable_image_load=True,
                   )
 # giriş yap
@@ -107,20 +109,22 @@ def like_and_comment(like_tag_list, comments_list):
 	session.set_do_comment(enabled=True, percentage=50)
 
 	hashtags = session.target_list(like_tag_list)
-	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
+	#comments = session.target_list(comments_list)
 
-	session.like_by_tags(hashtags, amount=100)
+	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
+	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
+
+	#session.like_by_tags(hashtags, amount=100)
+	#time.sleep(wait_time)
+		# comment job
+	#session.set_comments(comments)
+	session.set_comments(comments_list)
 	time.sleep(wait_time)
+
 
 	session.like_by_feed(amount=50, randomize=True, unfollow=True, interact=True)
 	time.sleep(wait_time)
 
-
-	# comment job
-	comments = session.target_list(comments_list)
-	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
-	session.set_comments(comments)
-	time.sleep(wait_time)
 
 
 

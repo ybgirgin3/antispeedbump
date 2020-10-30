@@ -23,7 +23,15 @@ session.login()
 #follow_tag_file = '/home/berkay/code/INSTAGRAM/antispeedbump/follow_tag_file.txt'
 follow_tag_file_path = os.getcwd()+'/text_files/follow_tag_file.txt'
 like_tag_file_path = os.getcwd()+'/text_files/like_tag_file.txt'
-comment_path = os.getcwd()+'/text_files/comments.txt'
+#comment_path = os.getcwd()+'/text_files/comments.txt'
+comment_path = [
+				u"cool!! 💯 Don't forget to checkout my account",
+				u"Awesome 💯 Don't forget to checkout my account",
+				u"Great Photo!! 😍😍😍 Don't forget to checkout my account",
+				u"This post is 🔥 !! Don't forget to checkout my account",
+				u"I like it 😍😍😍 Don't forget to checkout my account",
+				]
+
 big_accounts_path = os.getcwd()+'/text_files/big_accounts.txt'
 
 
@@ -45,12 +53,14 @@ with smart_run(session, threaded=True):
 	time.sleep(900)
 	"""
 
+	"""
 	Thread(target = like_and_comment(like_tag_file_path, comment_path)).start()
 	print('like işi bitti 15 dk bekleme süresi başladı')
 	time.sleep(900)
+	"""
 
 	print('unfollowing başlıyor')
-	Thread(target = unfollowing).start()
+	Thread(target = unfollowing()).start()
 
 	print('tüm işlemler bitti')
 	print('bot kapanıyor')

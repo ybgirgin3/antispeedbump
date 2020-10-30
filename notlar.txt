@@ -19,3 +19,5 @@ redditten bulduğum bir yazıda da (bknz: https://www.reddit.com/r/Instagram/com
 başka bir github issues sunda ise (bknz: https://github.com/timgrossmann/InstaPy/issues/5678#issuecomment-667183557) 'you got soft banned by instagram for too many API calls, configure a working quota supervisor that work for your account' şeklinde bir çözüm sunmuşlar.
 
 bekleme sürelerini rastgele olarak seçmek gerekebilir demişler bu sitede: https://www.blackhatworld.com/seo/python-how-to-make-webdriver-with-selenium-undetectable.1208678/. "çünkü insanlar genel olarak postlarda farklı okuma sürelerine sahiptirler. ve gün içinde etkileşim yapmayı bırakıp dinlenirler. eğer hiç durmadan 10 saat çalışırsa zaten bot olduğunu anlamamak için salak olmak gerekir" demiş adamın biri mantıklı da demiş
+ 
+24 saat bekledikten sonra bot tekrar kullanılabilir hale geldi
