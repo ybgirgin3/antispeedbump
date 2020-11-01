@@ -2,6 +2,7 @@
 import os
 import sys
 import ntpath
+import time
 from threading import Thread
 from net_check import Net
 
@@ -46,21 +47,17 @@ big_accounts_path = os.getcwd()+'/text_files/big_accounts.txt'
 # çünkü follow işini bitirmeden like işlemine geçmiyor
 
 with smart_run(session, threaded=True):
-	#Thread(target = follow_(follow_tag_file_path, big_accounts=big_accounts_path)).start()
-	"""
-	Thread(target = follow_(big_accounts=big_accounts_path)).start()
+	Thread(target = follow_(follow_tag_file_path, big_accounts=big_accounts_path)).start()
+	#Thread(target = follow_(big_accounts=big_accounts_path)).start()
 	print('takip işi bitti 15 dk bekleme süresi başladı')
 	time.sleep(900)
-	"""
 
-	"""
-	Thread(target = like_and_comment(like_tag_file_path, comment_path)).start()
-	print('like işi bitti 15 dk bekleme süresi başladı')
+	#Thread(target = like_and_comment(like_tag_file_path, comment_path)).start()
+	#print('like işi bitti 15 dk bekleme süresi başladı')
 	time.sleep(900)
-	"""
 
 	print('unfollowing başlıyor')
-	Thread(target = unfollowing()).start()
+	#Thread(target = unfollowing()).start()
 
 	print('tüm işlemler bitti')
 	print('bot kapanıyor')

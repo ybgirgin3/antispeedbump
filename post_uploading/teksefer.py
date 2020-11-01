@@ -21,7 +21,8 @@ def job():
     unable_to_path = os.path.join(main_path, 'unable_to_post')
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
 
-    image = random.choice([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
+    #image = random.choice([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
+    image = 'BMW M5  Fire Orange🧡🍊.jpeg'
     full_image_path = os.path.join(post_path, image)
     print(f'chosen image: {full_image_path}')
 
@@ -59,7 +60,5 @@ def job():
     bot.logout()
 
 
-"""
 if __name__ == '__main__':
     job()
-"""

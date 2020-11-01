@@ -91,10 +91,10 @@ def follow_(follow_tag_list = None, big_accounts = None):
 		time.sleep(wait_time)
 
 		# takipçinin gönderilerini beğenenlerden takip et
-		session.follow_likers(big_accounts, photos_grab_amount = 5, follow_likers_per_photo = 10, randomize=True, sleep_delay=600, interact=False)
+		#session.follow_likers(big_accounts, photos_grab_amount = 5, follow_likers_per_photo = 10, randomize=True, sleep_delay=600, interact=False)
 		time.sleep(wait_time)
 		# yorum atanları takip et
-		session.follow_commenters(big_accounts, amount=100, daysold=365, max_pic = 60, sleep_delay=600, interact=False)
+		#session.follow_commenters(big_accounts, amount=100, daysold=365, max_pic = 60, sleep_delay=600, interact=False)
 		time.sleep(wait_time)
 
     # unfollowing
@@ -105,14 +105,14 @@ def follow_(follow_tag_list = None, big_accounts = None):
 def like_and_comment(like_tag_list, comments_list):
 
 	# like jog
-	session.set_do_like(enabled=True, percentage=70)
+	#session.set_do_like(enabled=True, percentage=70)
 	session.set_do_comment(enabled=True, percentage=50)
 
 	hashtags = session.target_list(like_tag_list)
 	#comments = session.target_list(comments_list)
 
-	session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
-	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=0)
+	#session.set_delimit_liking(enabled=True, max_likes=10000000, min_likes=30)
+	session.set_delimit_commenting(enabled=True, max_comments=None, min_comments=100)
 
 	#session.like_by_tags(hashtags, amount=100)
 	#time.sleep(wait_time)
@@ -122,7 +122,7 @@ def like_and_comment(like_tag_list, comments_list):
 	time.sleep(wait_time)
 
 
-	session.like_by_feed(amount=50, randomize=True, unfollow=True, interact=True)
+	#session.like_by_feed(amount=50, randomize=True, unfollow=True, interact=True)
 	time.sleep(wait_time)
 
 
