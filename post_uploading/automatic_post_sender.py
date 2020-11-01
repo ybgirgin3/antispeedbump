@@ -27,16 +27,18 @@ def job():
 
     pic = prep_and_fix(full_image_path)
     caption = os.path.splitext(image)[0]
-    tags = "#bmw #bmwm3 #bmwm4 #bmwlife #bmwm3drift #bmwi8 #bmwm5 #bmwx5 #bmwm #bmwlove #bmwx3 #bmw4series #bmw335i #bmwrepost #bmwgram #bmwnation #bmw #bmwlover #bmwlife #bmwm #m2 #m3 #m4 #m5 #bmwclup #bmwmpower #bmwgram #bmwmperformance #bmwmotorsport #bmwfan #bmwmodification #bmwlove #bmwmnation #bmwnation #v8 "
+    tags = "#bmw #bmwm3 #bmwm4 #bmwlife #bmwm3drift #bmwi8 #bmwm5 #bmwx5 #bmwm #bmwlove #bmwx3 #bmw4series #bmw335i #bmwrepost #bmwgram #bmwnation #bmw #bmwlover #bmwlife #bmwm #m2 #m3 #m4 #m5 #bmwclup #bmwmpower #bmwgram #bmwmperformance #bmwmotorsport #bmwfan #bmwmodification #bmwlove #bmwmnation #bmwnation #m8 #bmwm8 #bmwm8competition #competition #v8 "
     upload = bot.upload_photo(pic, caption = """
             {}
 
 
 
 
-   ❗❗❗ Don't forget to like, share, save and share with your friends to support us 💪🏻💪🏻💪🏻
-   ❗❗❗ Don't forget to turn on notifications
-   ❗❗❗ Follow for more 👉🏻 @antispeedbump_official
+   ❗ Don't forget to like, share, save and share with your friends to support us 💪🏻💪🏻💪🏻
+   ❗ Don't forget to turn on notifications
+
+   ❗ Follow for more 👉🏻 @antispeedbump_official
+   ❗ Follow for more 👉🏻 @antispeedbump_official
 
 
 
