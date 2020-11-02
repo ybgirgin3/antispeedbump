@@ -78,13 +78,14 @@ session.set_relationship_bounds(
 with smart_run(session, threaded=True):
     # önce fonksiyonları çağırmak lazım
     # follow
+    """
     follow(
         session,
         big_accounts = target_accounts,
         follow_tag_list = follow_tags)
-    
+    """
     # like
-    like(session, like_tag_list= like_tags)
+    like(session, like_tag_list=None)
 
     # comments
     comment(session, comment_list=comments)
@@ -96,7 +97,7 @@ with smart_run(session, threaded=True):
     
     
     # işlemleri en son tanımlamak gerekiyor
-    session.set_do_follow(enabled=True, percentage=50)
+    #session.set_do_follow(enabled=False, percentage=50)
     session.set_do_like(enabled=True, percentage=50)
     session.set_do_comment(enabled=True, percentage=50)
 
@@ -104,6 +105,5 @@ with smart_run(session, threaded=True):
     # unfollow_after = 48*60*60
     # komutunu da eklemek gerekli
     session.set_do_unfollow_users(enabled=True, nonFollowers=True, style="LIFO", sleep_delay=655)
-    pass
 
 

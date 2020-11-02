@@ -45,6 +45,7 @@ Follow for more 👉🏻 @antispeedbump_official
         notif.send('{} isimli post başarılı bir şekilde instagramda paylaşıldı.'.format(image))
         #os.system(f'mv {full_image_path} {sent_path}')
         shutil.move('{}'.format(full_image_path), sent_path)
+        os.rmdir("config")
         #sys.exit(0)
     else:
         #shutil.move('{}'.format(full_image_path), unable_to_post)

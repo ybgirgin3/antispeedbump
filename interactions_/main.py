@@ -62,14 +62,3 @@ with smart_run(session, threaded=True):
 
 	#print('unfollowing başlıyor')
 	#Thread(target = unfollowing()).start()
-    time.sleep(900)
-
-	print('tüm işlemler bitti')
-	print('bot kapanıyor')
-	sys.exit()
-
-
-
-
-      
-	#session.end(threaded_session=True)

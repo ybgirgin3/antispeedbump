@@ -39,6 +39,7 @@ session.set_skip_users(skip_private=True,
         )
 
 
+"""
 def job(big_accounts=None, comments_list=None):
     
 	# set delimitings
@@ -59,8 +60,9 @@ def job(big_accounts=None, comments_list=None):
 	session.set_do_like(enabled=True, percentage=50)
 	session.set_do_comment(enabled=True, percentage=50)
 
+"""
 
 def unf():
     session.set_dont_unfollow_activate_users(enabled=True, posts=10)
-    session.unfollow_users(amount=120, nonFollowers=True, style, unfollow_after=24*6*60, sleep_delay=655))
+    session.unfollow_users(amount=120, nonFollowers=True, style=FIFO, unfollow_after=24*6*60, sleep_delay=655)
 
