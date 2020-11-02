@@ -1,3 +1,3 @@
 instapy==0.6.11
 instabot==0.117.0
-python-crontab==2.5.1
+schedule

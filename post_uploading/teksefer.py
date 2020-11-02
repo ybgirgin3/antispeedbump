@@ -22,7 +22,8 @@ def job():
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
 
     #image = random.choice([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
-    image = 'BMW M5  Fire Orange🧡🍊.jpeg'
+    #image = 'BMW M5  Fire Orange🧡🍊.jpeg'
+    image = 'Big big booty... 🍑.jpg'
     full_image_path = os.path.join(post_path, image)
     print(f'chosen image: {full_image_path}')
 
