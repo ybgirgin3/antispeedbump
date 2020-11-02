@@ -30,6 +30,8 @@ X =  {
     "X7": "#bmw #bmwx7 #x7 #x7m50i #x7mcompetition #v8 #twinturbo #turbocharged #suv #twinturbocharged"
 }
 
+username = 'antispeedbump_bmw_official'
+password = 'yusufberkaygirgin2580'
 
 def json_funcker(model):
     sp = model.split(",")
@@ -51,8 +53,8 @@ def json_funcker(model):
 def job():
     bot = Bot()
 
-    #bot.login(username = "antispeedbump_bmw_official", password = "yusufberkaygirgin2580")
-    bot.login(username = "mental_huzur", password = "manzaralar1234")
+    bot.login(username = username, password = password)
+    #bot.login(username = "mental_huzur", password = "manzaralar1234")
 
     #main_path = '/home/berkay/code/INSTAGRAM/antispeedbump/uploading/post_/araba_postları/fotolar/'
     main_path = os.getcwd()
@@ -71,18 +73,18 @@ def job():
     caption = os.path.splitext(imagename)[0]
     tags = full_im[3]
     upload = bot.upload_photo(pic, caption = """
-            {}
+            {0}
 
 
 💪🏻 Tag a friend who need to see this
 💪🏻 Don't forget to turn on notifications for more
 
-Follow for more 👉🏻 @antispeedbump_official
-Follow for more 👉🏻 @antispeedbump_official
+Follow for more 👉🏻 @{1}
+Follow for more 👉🏻 @{1}
 
-{}
+{2}
 
-                    """.format(caption, tags))
+                    """.format(caption, username, tags))
 
     if upload:
         time.sleep(4)
