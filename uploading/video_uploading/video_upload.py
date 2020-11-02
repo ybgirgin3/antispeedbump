@@ -12,7 +12,7 @@ def video_job():
     video = 'vid.mp4'
     print(f'choosen vid: {video}')
     #info = get_video_info(video)
-    print(f'about video file: {info}')
+    #print(f'about video file: {info}')
     upload_vid = bot.upload_video(video)
 
     if upload_vid:
