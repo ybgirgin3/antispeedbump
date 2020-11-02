@@ -77,6 +77,7 @@ def job():
 
 
 💪🏻 Tag a friend who need to see this
+💪🏻 Don't forget to like comment and share with your friends
 💪🏻 Don't forget to turn on notifications for more
 
 Follow for more 👉🏻 @{1}
