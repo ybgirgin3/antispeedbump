@@ -30,8 +30,8 @@ X =  {
     "X7": "#bmw #bmwx7 #x7 #x7m50i #x7mcompetition #v8 #twinturbo #turbocharged #suv #twinturbocharged"
 }
 
-username = 'antispeedbump_bmw_official'
-password = 'yusufberkaygirgin2580'
+#username = 'antispeedbump_bmw_official'
+#password = 'yusufberkaygirgin2580'
 
 def json_funcker(model):
     sp = model.split(",")
@@ -50,13 +50,15 @@ def json_funcker(model):
 
 
 # https://github.com/basnijholt/instacron/blob/master/instacron.py#L378
-def job():
+def post_sender(main_path, username, password):
+    """ main_path direk olarak postların olduğu yeri içermeli """
+
+
     bot = Bot()
 
     bot.login(username = username, password = password)
-    #bot.login(username = "mental_huzur", password = "manzaralar1234")
 
-    main_path = os.getcwd()
+    # main_path = os.getcwd()
     sent_path = os.path.join(main_path, 'araba_postları/sent_photos')
     #unable_to_path = os.path.join(main_path, 'unable_to_post')
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
@@ -82,28 +84,23 @@ Dm for credit
 
 
 
-
-
 {2}
 
                     """.format(caption, username, tags))
 
     if upload:
         time.sleep(4)
-        print('oldu amk!')
+        # print('oldu amk!')
         #notif.send('{} isimli post başarılı bir şekilde instagramda paylaşıldı.'.format(image))
         #os.system(f'mv {full_image_path} {sent_path}')
         shutil.move('{}'.format(full_image_path), sent_path)
         shutil.rmtree('/config', ignore_errors=True)
         #sys.exit(0)
-    else:
-        #shutil.move('{}'.format(full_image_path), unable_to_post)
-        print('gönderilemedi.. yeniden başlıyor.')
-        #os.system('/home/berkay/miniconda3/envs/antispeed/bin/python3 /home/berkay/code/INSTAGRAM/antispeedbump/post_uploading/automatic_post_sender.py')
 
 
     bot.logout()
 
-
+"""
 if __name__ == '__main__':
     job()
+"""
