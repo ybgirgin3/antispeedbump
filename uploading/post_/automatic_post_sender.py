@@ -18,7 +18,7 @@ M =  {
     "M6": "#bmw #bmwm6 #m6 #v8 #m6grandcoupe #m6coupe #car #carsofinstagram #twinturbo",
     "M5": "#bmw #bmwm5 #m5 #v8 #m5competition #car #carsofinstagram #twinturbo #m5lci",
     "M4": "#bmw #bmwm4 #m4 #S55 #convertible #m4competition #car #carsofinstagram #twinturbo #m4csl",
-    "M3": "#bmw #bmwm3 #m3 #S55 #v8 #e92 #f82 #g20 #m3competition #twinturbo #m3csl",
+    "M3": "#bmw #bmwm3 #m3 #S55 #v8 #e92 #f82 #g20 #m3competition #twinturbo #e46 #m3csl",
     "M2": "#bmw #bmwm2 #m2 #S55 #f87 #turbocharged #twinturbo #m2csl #m3competition #m2csl"
 }
 
