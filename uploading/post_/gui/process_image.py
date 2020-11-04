@@ -20,7 +20,7 @@ def prep_and_fix(data):
 	"""
 	with open(data, 'rb') as f:
 		last_image_name = data.split('/')
-		pic_name = os.path.splitext(last_image_name[-1][0])
+		pic_name = os.path.splitext(last_image_name[-1])[0]
 		img = Image.open(f)
 		img = strip_exif(img)
 		if not correct_ratio(data):

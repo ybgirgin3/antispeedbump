@@ -15,17 +15,19 @@ def strip_exif(img):
 	return img_wout_exif
 
 def prep_and_fix(data):
-	"""
-		data must be path of the image
-	"""
-	with open(data, 'rb') as f:
-		img = Image.open(f)
-		img = strip_exif(img)
-		if not correct_ratio(data):
-			img = crop_maximize_entropy(img)
-		photo = os.path.join('sent_photos', 'last_sended.jpg')
-		img.save(photo)
-	return photo
+    """
+        data must be path of the image
+    """
+    with open(data, 'rb') as f:
+        # newly saved image name
+        pn = os.path.splitext(data.split('/')[-1])[0]
+        img = Image.open(f)
+        img = strip_exif(img)
+        if not correct_ratio(data):
+            img = crop_maximize_entropy(img)
+        photo = os.path.join('araba_postları/sent_photos', '{}.jpg'.format(pn))
+        img.save(photo)
+    return photo
 
 
 def _entropy(data):

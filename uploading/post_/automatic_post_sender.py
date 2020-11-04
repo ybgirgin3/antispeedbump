@@ -97,9 +97,8 @@ Dm for credit
         shutil.rmtree('/config', ignore_errors=True)
         #sys.exit(0)
     else:
-        #shutil.move('{}'.format(full_image_path), unable_to_post)
-        print('gönderilemedi.. yeniden başlıyor.')
-        #os.system('/home/berkay/miniconda3/envs/antispeed/bin/python3 /home/berkay/code/INSTAGRAM/antispeedbump/post_uploading/automatic_post_sender.py')
+        #print('gönderilemedi.. yeniden başlıyor.')
+        print('gönderilemedi.. tekrar deneyin')
 
 
     bot.logout()
