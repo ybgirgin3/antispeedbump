@@ -13,7 +13,7 @@ notif = Notify()
 def job():
     bot = Bot()
 
-    bot.login(username = "antispeedbump_official", password = "yusufberkaygirgin2580")
+    bot.login(username = "antispeedbump_bmw_official", password = "yusufberkaygirgin2580")
     #bot.login(username = "mental_huzur", password = "manzaralar1234")
 
     main_path = '/home/berkay/code/INSTAGRAM/antispeedbump/post_uploading'
@@ -23,7 +23,7 @@ def job():
 
     #image = random.choice([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
     #image = 'BMW M5  Fire Orange🧡🍊.jpeg'
-    image = 'Big big booty... 🍑.jpg'
+    image = 'Red lipstick is like a dangerous weapon... it is also same in the car... 💄🔴   owner @ramon_performance.jpg'
     full_image_path = os.path.join(post_path, image)
     print(f'chosen image: {full_image_path}')
 

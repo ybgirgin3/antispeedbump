@@ -62,6 +62,7 @@ def job():
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
 
     image = sorted([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
+    #image = 'Red lipstick is like a dangerous weapon... it is also same in the car... 💄🔴   owner @ramon_performance.jpg'
     full_image_path = os.path.join(post_path, image[0])
     print(f'chosen image: {full_image_path}')
 
