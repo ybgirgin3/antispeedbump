@@ -16,14 +16,15 @@ def job():
     bot.login(username = "antispeedbump_bmw_official", password = "yusufberkaygirgin2580")
     #bot.login(username = "mental_huzur", password = "manzaralar1234")
 
-    main_path = '/home/berkay/code/INSTAGRAM/antispeedbump/post_uploading'
+    main_path = '/home/berkay/code/INSTAGRAM/antispeedbump/uploading/post_'
     sent_path = os.path.join(main_path, 'araba_postları/sent_photos')
     unable_to_path = os.path.join(main_path, 'unable_to_post')
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
 
     #image = random.choice([image for image in os.listdir(post_path) if os.path.splitext(image)[1] == '.jpg'])
     #image = 'BMW M5  Fire Orange🧡🍊.jpeg'
-    image = 'Red lipstick is like a dangerous weapon... it is also same in the car... 💄🔴   owner @ramon_performance.jpg'
+    #image = 'Red lipstick is like a dangerous weapon... it is also same in the car... 💄🔴   owner @ramon_performance.jpg'
+    image = '2,M,7_series,The 7 sitting with his Genghis Khan style moustache.png'
     full_image_path = os.path.join(post_path, image)
     print(f'chosen image: {full_image_path}')
 
