@@ -11,9 +11,7 @@ def story_job():
 	image = 'm5.jpeg'
 	print(f'choosen image: {image}')
 
-	pic = configure_story(upload_id=1, photo=image)
-
-	upload = bot.upload_story_photo(pic)
+	upload = bot.upload_story_photo(image)
 
 
 	if upload:
