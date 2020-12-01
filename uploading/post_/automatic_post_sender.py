@@ -77,9 +77,9 @@ def job():
 
 
 Follow for more 👉🏻 @{1}
-⚠️ Don't forget to like save and share with your friends
-⚠️ Don't forget to turn on notifications
-Dm for credit
+💪🏻Don't forget to like save and share with your friends
+💪🏻Don't forget to turn on notifications
+✉ Dm for credit
 
 
 
