@@ -1,8 +1,0 @@
-from InstagramAPI import InstagramAPI
-from thumbnailer import thumbnailed
-video = 'post.mp4'
-thumbnail = thumbnailed(video)
-
-bot = InstagramAPI('mental_huzur', 'manzaralar1234')
-bot.login()
-bot.uploadVideo(video, thumbnail, caption='deneme python bot')
