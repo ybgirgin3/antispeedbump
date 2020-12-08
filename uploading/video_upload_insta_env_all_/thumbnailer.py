@@ -2,7 +2,6 @@ import cv2
 import sys
 import random
 import os
-from tqdm import tqdm
 
 #video = 'post.mp4'
 #video = 'post2.mp4'
