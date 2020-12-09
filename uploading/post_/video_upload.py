@@ -14,6 +14,7 @@ from instabot import Bot
 from thumbnailer import thumbnailed
 import sys
 from json_funcker import json_funcker
+import os
 
 
 """
@@ -49,10 +50,10 @@ def video_job():
     tags = full_vid[3]
 
     # thumbnail
-    thumb = thumbnailed(video)
-    video = resize_video(video)
+    thumb = thumbnailed(choosen_vid_path)
+    #video = resize_video(video)
     print(f'choosen vid: {video}')
-    upload_vid = bot.upload_video(video, caption= """
+    upload_vid = bot.upload_video(choosen_vid_path, caption= """
 {0}
 Follow for more 👉🏻 @{1}
 
