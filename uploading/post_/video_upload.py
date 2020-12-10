@@ -52,7 +52,7 @@ def video_job():
     # thumbnail
     thumb = thumbnailed(choosen_vid_path)
     #video = resize_video(video)
-    print(f'choosen vid: {video}')
+    #print(f'choosen vid: {video}')
     upload_vid = bot.upload_video(choosen_vid_path, caption= """
 {0}
 Follow for more 👉🏻 @{1}
