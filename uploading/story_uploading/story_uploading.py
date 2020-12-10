@@ -17,13 +17,15 @@ def story_job():
 
     """
     @param1 :   photo
-    @param2 :   upload_id
+    @param2 :   upload_id=None -> if None -> bot configures by itself
 
     """
     upload = bot.upload_story_photo(photo = image, upload_id = None)
 
-    if upload: print('oldu amk')
-    else: print('olmadı amk')
+    if upload:
+        print('oldu amk')
+    else:
+        print('olmadı amk')
 
 
 story_job()
