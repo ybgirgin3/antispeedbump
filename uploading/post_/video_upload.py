@@ -15,6 +15,7 @@ from thumbnailer import thumbnailed
 import sys
 from json_funcker import json_funcker
 import os
+import subprocess
 
 
 """
@@ -25,18 +26,15 @@ username = 'antispeedbump_bmw_official'
 password = 'yusufberkaygirgin2580'
 
 
-def video_job():
+def video_job(path, video):
     # login
     bot = Bot()
     bot.login(username = username, password = password)
 
     # videoyu direk olarak tanımlamaktansa fotolardaki gibi
     # verdiğim pathten bulacak
-    path = '/media/berkay/Elements/editlenecek_videolar/hazır_videolar/'
 
-    # choose video
-    video = sorted([video for video in os.listdir(path) if os.path.splitext(video)[1] == '.mp4'])
-
+    
     # show chosen video
     choosen_vid_path = os.path.join(path, video[0])
     print(f'choosen video: {choosen_vid_path}')
@@ -73,4 +71,12 @@ Follow for more 👉🏻 @{1}
 
 
 
-video_job()
+
+path = '/media/berkay/Elements/editlenecek_videolar/tasinmislar'
+# choose video
+video = sorted([video for video in os.listdir(path) if os.path.splitext(video)[1] == '.mp4'])
+if len(video) == 0:
+    subprocess.run(['python3', 'prep_video.py'])
+    #print('hepsi Remove me')
+
+video_job(path, video)
