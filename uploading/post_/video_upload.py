@@ -76,9 +76,9 @@ Follow for more 👉🏻 @{1}
 path = '/media/berkay/Elements/editlenecek_videolar/tasinmislar'
 # choose video
 video = sorted([video for video in os.listdir(path) if os.path.splitext(video)[1] == '.mp4'])
-print(video[0])
 if len(video) == 0:
     subprocess.run(['python3', 'prep_video.py'])
     time.sleep(2)
+
 
 video_job(path, video)
