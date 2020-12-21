@@ -73,11 +73,12 @@ Follow for more 👉🏻 @{1}
 
 
 
-path = '/media/berkay/Elements/editlenecek_videolar/tasinmislar'
+#path = '/media/berkay/Elements/editlenecek_videolar/tasinmislar'
+path = '/media/berkay/Elements/editlenecek2/tasinmislar'
 # choose video
 video = sorted([video for video in os.listdir(path) if os.path.splitext(video)[1] == '.mp4'])
 if len(video) == 0:
-    subprocess.run(['python3', 'prep_video.py'])
+    subprocess.run(['/home/berkay/miniconda3/envs/antispeed/bin/python', '/home/berkay/code/SocialMedia/antispeedbump/uploading/post_/prep_video.py'])
     time.sleep(2)
 
 

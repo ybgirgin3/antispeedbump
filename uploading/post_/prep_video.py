@@ -42,7 +42,8 @@ def move(data, mp):
 
 
 
-main_path = '/media/berkay/Elements/editlenecek_videolar/'
+#main_path = '/media/berkay/Elements/editlenecek_videolar/'
+main_path = '/media/berkay/Elements/editlenecek2/'
 path = os.path.join(main_path, 'hazır_videolar/')
 move_path = os.path.join(main_path, 'tasinmislar/')
 #path = '/home/berkay'
