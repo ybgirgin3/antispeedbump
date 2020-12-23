@@ -7,8 +7,11 @@ import time
 from process_image import prep_and_fix
 from json_funcker import json_funcker
 
-username = 'antispeedbump_bmw_official'
-password = 'yusufberkaygirgin2580'
+#username = 'antispeedbump_bmw_official'
+#password = 'yusufberkaygirgin2580'
+
+username = 'mental_huzur'
+password = 'manzaralar1234'
 
 
 # https://github.com/basnijholt/instacron/blob/master/instacron.py#L378
@@ -16,7 +19,6 @@ def job():
     bot = Bot()
 
     bot.login(username = username, password = password)
-    #bot.login(username = "mental_huzur", password = "manzaralar1234")
 
     main_path = os.getcwd()
     sent_path = os.path.join(main_path, 'araba_postları/sent_photos')

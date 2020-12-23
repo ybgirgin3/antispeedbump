@@ -48,6 +48,7 @@ path = os.path.join(main_path, 'hazır_videolar/')
 move_path = os.path.join(main_path, 'tasinmislar/')
 #path = '/home/berkay'
 
+# çalışacak olan komut burası 
 cmd = [x for x in os.listdir(path)]
 paths = []
 for i in cmd:
