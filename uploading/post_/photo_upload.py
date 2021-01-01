@@ -38,14 +38,8 @@ def job():
     tags = full_im[3]
     upload = bot.upload_photo(pic, caption = """
 {0}
-Follow for more 👉🏻 @{1}
-
-💪🏻Don't forget to like save and share with your friends
-💪🏻Don't forget to turn on notifications
-✉ Dm for credit
-
-
-
+💎 Follow {1}
+💎 Follow and join us
 
 
 {2}
