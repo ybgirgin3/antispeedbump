@@ -54,12 +54,9 @@ def video_job(path, video):
     #print(f'choosen vid: {video}')
     upload_vid = bot.upload_video(choosen_vid_path, caption= """
 {0}
-Follow for more 👉🏻 @{1}
 
-💪🏻Don't forget to like save and share with your friends
-💪🏻Don't forget to turn on notifications
-✉ Dm for credit
-
+💎 Follow @{1}
+💎 Follow and join us
 
 {2}
 
