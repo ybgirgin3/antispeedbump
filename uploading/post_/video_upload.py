@@ -17,6 +17,7 @@ from json_funcker import json_funcker
 import os
 import subprocess
 import time
+import shutil
 
 
 """
@@ -64,6 +65,7 @@ def video_job(path, video):
 
     if upload_vid:
         print('oldu amk')
+        shutil.move('{}'.format(choosen_vid_path), '/tmp')
     else:
         print('olmadı yine aq')
 
