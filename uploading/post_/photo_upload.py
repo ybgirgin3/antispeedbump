@@ -21,7 +21,7 @@ def job():
     bot.login(username = username, password = password)
 
     main_path = os.getcwd()
-    sent_path = os.path.join(main_path, 'araba_postları/sent_photos')
+    #sent_path = os.path.join(main_path, 'araba_postları/sent_photos') # => send sent images to /tmp dir
     #unable_to_path = os.path.join(main_path, 'unable_to_post')
     post_path = os.path.join(main_path, 'araba_postları/fotolar')
 
@@ -51,7 +51,7 @@ def job():
         print('oldu amk!')
         #notif.send('{} isimli post başarılı bir şekilde instagramda paylaşıldı.'.format(image))
         #os.system(f'mv {full_image_path} {sent_path}')
-        shutil.move('{}'.format(full_image_path), sent_path)
+        shutil.move('{}'.format(full_image_path), '/tmp')
         #sys.exit(0)
     else:
         #print('gönderilemedi.. yeniden başlıyor.')
