@@ -25,7 +25,8 @@ def prep_and_fix(data):
         img = strip_exif(img)
         if not correct_ratio(data):
             img = crop_maximize_entropy(img)
-        photo = os.path.join('araba_postları/sent_photos', '{}.jpg'.format(pn))
+        # move used file to /tmp file
+        photo = os.path.join('/tmp', '{}.jpg'.format(pn))
         img.save(photo)
     return photo
 
