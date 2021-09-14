@@ -11,15 +11,7 @@ from actions_ import follow_, like_and_comment, session, unfollowing
 from actions2 import job, unf
 from instapy import smart_run
 
-"""
-# kullanıcı adı ve şifreyi gir sisteme
-session = InstaPy(username='mental_huzur',
-                  password='manzaralar1234', 
-                  headless_browser=True
-                  )
-# giriş yap
-session.login()
-"""
+
 
 # dosya yolları
 #follow_tag_file = '/home/berkay/code/INSTAGRAM/antispeedbump/follow_tag_file.txt'
