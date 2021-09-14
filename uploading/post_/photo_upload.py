@@ -7,11 +7,7 @@ import time
 from process_image import prep_and_fix
 from json_funcker import json_funcker
 
-username = 'antispeedbump_bmw_official'
-password = 'yusufberkaygirgin2580'
 
-#username = 'mental_huzur'
-#password = 'manzaralar1234'
 
 
 # https://github.com/basnijholt/instacron/blob/master/instacron.py#L378
