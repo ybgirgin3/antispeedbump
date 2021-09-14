@@ -20,13 +20,6 @@ import time
 import shutil
 
 
-"""
-usern = 'mental_huzur'
-passw = 'manzaralar2580'
-"""
-username = 'antispeedbump_bmw_official'
-password = 'yusufberkaygirgin2580'
-
 
 def video_job(path, video):
     # login
