@@ -1,9 +1,6 @@
 from instabot import Bot
 from instabot.api.api_story import configure_story
 
-username = 'mental_huzur'
-password = 'manzaralar2580'
-
 
 def story_job():
 
