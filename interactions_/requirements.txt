@@ -1,3 +1,0 @@
-instapy==0.6.11
-instabot==0.117.0
-schedule

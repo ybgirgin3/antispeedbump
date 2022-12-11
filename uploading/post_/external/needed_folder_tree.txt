@@ -1,9 +1,0 @@
-sent_photos
-post_
-    |
-    |
-    araba_postları
-                |
-                |
-                fotolar
-                sent_photos
