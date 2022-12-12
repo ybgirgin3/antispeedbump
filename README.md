@@ -1,3 +1,8 @@
 # antispeedbump
 
-automate post sender to instagram 
+## get information from instagram page
+
+- followers
+- following
+- post count
+- post likes
