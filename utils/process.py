@@ -1,9 +1,10 @@
 from .fp import FileProcess
 import requests
 import json
-import os
+import ast
 
-HEADERS = json.load(open("configs/headers.json"))
+HEADERS = FileProcess("headers", root="configs").read()
+CONTENT_PATHS = FileProcess("content_paths", root="configs").read()
 
 
 class Fetch:
@@ -28,7 +29,10 @@ class Fetch:
 class Parse:
     "Parse data which recieved from Fetch(line 6)"
 
-    def __init__(self, filename: str) -> None:
-        self.content = FileProcess(
-            filepath=os.path.join('sites', filename)).read()
-        print(self.content)
+    def __init__(self, content: str) -> None:
+        self.content = content
+
+    def find_val(self):
+        ret = getattr('id', CONTENT_PATHS.id)
+        print(ret)
+
