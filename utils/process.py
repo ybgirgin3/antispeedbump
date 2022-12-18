@@ -1,11 +1,11 @@
 from .fp import FileProcess
+from .expressions import Expressions
 import requests
 import json
 import ast
 
 HEADERS = FileProcess("headers", root="configs").read()
-CONTENT_PATHS = FileProcess("content_paths", root="configs").read()
-
+#CONTENT_PATHS = FileProcess("content_paths", root="configs").read()
 
 class Fetch:
     "Create a request and get data from api"
@@ -33,6 +33,5 @@ class Parse:
         self.content = content
 
     def find_val(self):
-        ret = getattr('id', CONTENT_PATHS.id)
-        print(ret)
+        return Expressions(data=self.content).parse()
 
