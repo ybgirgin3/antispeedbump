@@ -1,21 +1,32 @@
-from utils import FileProcess, Fetch, Parse
+from utils import FileProcess, Process
+from typing import Optional
 import sys
 
-# get data
 username = sys.argv[1]
 
-# if file exists
-content = None
-is_exists = FileProcess(filename=username).is_site_exists()
-print("is_exists", is_exists)
-if isinstance(is_exists, str):
-    content = is_exists
 
-# fetch data
-elif not is_exists:
-    resp = Fetch(username=username).fetch()
-    saved_resp = FileProcess(filename=username, content=resp).write()
+class Bot:
+    def __init__(self, target_user: Optional[str] = None):
+        self.target_user = target_user
 
-# extract content
-content = FileProcess(filename=username).read()
-extracted = Parse(content)
+    def get_data_from_another(self):
+        # if file exists
+        content = None
+        is_site_exist = FileProcess(filename=username).is_site_exists()
+        if not is_site_exist:
+            "if username is new create user data"
+            print("data not exists")
+            resp: dict = Process(username=username).fetch()
+            FileProcess(filename=username, content=resp).write()
+
+        # extract content
+        content = FileProcess(filename=username).read()
+        extracted = Process(content=content).parse()
+        return extracted
+
+    def post_content(self):
+        pass
+
+
+user_content = Bot(target_user=username).get_data_from_another()
+print("user_content: ", user_content)

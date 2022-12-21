@@ -28,6 +28,6 @@ class FileProcess:
 
     def is_site_exists(self) -> Union[str, None]:
         if os.path.exists(self.filepath):
-            return self.filepath
+            return True
         else:
-            return None
+            return False
