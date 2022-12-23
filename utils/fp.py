@@ -12,7 +12,7 @@ class FileProcess:
             kwargs.get("root", "sites"), f'{filename}.json')
         self.content = kwargs.get('content', {})
 
-    def read(self):
+    def read(self) -> dict:
         "read json"
         with open(self.filepath, "r") as f:
             ret = json.load(f)
@@ -26,7 +26,7 @@ class FileProcess:
         with open(self.filepath, "w") as f:
             f.write(c2r)
 
-    def is_site_exists(self) -> Union[str, None]:
+    def is_site_exists(self) -> bool:
         if os.path.exists(self.filepath):
             return True
         else:
