@@ -104,6 +104,7 @@ class Post:
 
         # *** Write a Description
         # find description area
+        time.sleep(3)
         desc_area = self._find_attr(attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
         wait_until(desc_area.exists)
         self._fill(attr=desc_area, value=self.image['description'])
@@ -113,6 +114,13 @@ class Post:
         sb = Button("Share")
         wait_until(sb.exists)
         self._button_event(attr=sb)
+
+        # Your post has been shared?
+        # time.sleep(3)
+        # t = Text("Your post has been shared.")
+        # wait_until(sb.exists)
+        # if self._find_attr(t.exists):
+        #     print("Post Sharing Successfull")
 
 
     def _fill(self, attr: str, value: str):
@@ -154,19 +162,3 @@ class Post:
         print("ret: ", ret)
         return ret
 
-    # selenium way to solve
-    # def _find_attr(self, select_by: str, attr: str, mapper: str):
-    #     ret_attr = None
-    #     if mapper.lower() == "selenium":
-    #         method = getattr(By, select_by.upper())
-    #         print("select element by: ", method)
-    #         wait = WebDriverWait(webdriver, 5)
-    #         ret_attr = webdriver.find_element(method, attr)
-    #     else:
-    #         sign = ""
-    #         if select_by == 'name':
-    #             sign = "@"
-
-    #         ret_attr = find_all(S(f"{sign}{attr}"))
-
-    #     return ret_attr
