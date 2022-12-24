@@ -2,6 +2,7 @@
 from typing import Optional
 from pathlib import Path
 import platform
+import time
 import os
 
 # external
@@ -23,10 +24,11 @@ class Post:
                  passwd: str = "uZZc4-YBY:5sVW?",
                  # username: str = "bekocankod"
                  # passwd: str = ")d3::b%&.X,u3^J"
-                 image: Optional[dict] = {}) -> None:
+                 image: dict = {}) -> None:
         self.url = url
         self.username = username
         self.passwd = passwd
+        self.image = image
 
         driver_path = os.path.join(Path().parent.absolute(
         ), f'configs/driver/{platform.system().lower()}/chromedriver')
@@ -38,7 +40,7 @@ class Post:
         "main process"
         go_to(self.url)  #  go to login
 
-        # LOGIN 
+        # ***  LOGIN 
         wait_until(Button("Log in").exists)  # wait for page fully loaded
         # find buttons
 
@@ -46,31 +48,71 @@ class Post:
         password_button = self._find_attr('@password', with_s=True)[0]
         login_button = self._find_attr(Button("Log in"))[0]
 
-        # interact
+        #  interact
         self._fill(username_button, self.username)
         self._fill(password_button, self.passwd)
         self._button_event(attr=login_button)
 
-
-        # Save Your Login Info?
-        wait_until(Button("Not Now").exists)
+        # *** Save Your Login Info?
+        nn = Button("Not Now")
+        wait_until(nn.exists)
         # find button
-        not_now_button = self._find_attr(Button("Not Now"))[0]
+        not_now_button = self._find_attr(nn)[0]
         self._button_event(attr=not_now_button)
 
-
-        # Turn on Notifications?
-        wait_until(Button("Not Now").exists)
+        # *** Turn on Notifications?
+        nn = Button("Not Now")
+        wait_until(nn.exists)
         # find button
-        not_now_button = self._find_attr(Button("Not Now"))[0]
+        not_now_button = self._find_attr(nn)[0]
         self._button_event(attr=not_now_button)
 
-
-        # share 
-        share_button = self._find_attr("//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
+        # *** share
+        share_button = self._find_attr(
+            "//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
         # find button
         wait_until(share_button.exists)
         self._button_event(attr=share_button)
+
+        # attach file
+        drag_file(self.image['path'], to="Drag photos and videos here")
+
+        # *** Aspect Ration 
+        # crop button
+        crop_button = self._find_attr(
+            "//*[name()='svg' and @aria-label='Select crop']", with_s=True)[0]
+        wait_until(crop_button.exists)
+        self._button_event(attr=crop_button)
+
+        # original button
+        org = Button("Original")
+        wait_until(org.exists)
+        self._button_event(attr=org)
+
+        # next session (two times in a row)
+        # first
+        ns = Button("Next")
+        wait_until(ns.exists)
+        self._button_event(attr=ns)
+
+        time.sleep(3)
+
+        # second
+        ns = Button("Next")
+        wait_until(ns.exists)
+        self._button_event(attr=ns)
+
+        # *** Write a Description
+        # find description area
+        desc_area = self._find_attr(attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
+        wait_until(desc_area.exists)
+        self._fill(attr=desc_area, value=self.image['description'])
+
+
+        # Share post
+        sb = Button("Share")
+        wait_until(sb.exists)
+        self._button_event(attr=sb)
 
 
     def _fill(self, attr: str, value: str):
