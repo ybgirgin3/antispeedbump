@@ -26,5 +26,5 @@ class Bot:
         return extracted
 
     def post_content(self):
-        ret = Post(image=self.image).process()
+        ret = Post(image=self.image).scenario()
         return ret

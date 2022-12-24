@@ -1,8 +1,7 @@
 # built-in
-from typing import Optional, Union
-import platform
+from typing import Optional
 from pathlib import Path
-
+import platform
 import os
 
 # external
@@ -35,14 +34,14 @@ class Post:
         self.driver = set_driver(webdriver.Chrome(driver_path))
         self.get = get_driver()
 
-    def process(self):
+    def scenario(self):
         "main process"
         go_to(self.url)  #  go to login
 
-        # login
+        # LOGIN 
+        wait_until(Button("Log in").exists)  # wait for page fully loaded
         # find buttons
 
-        wait_until(Button("Log in").exists)  # wait for page fully loaded
         username_button = self._find_attr('@username', with_s=True)[0]
         password_button = self._find_attr('@password', with_s=True)[0]
         login_button = self._find_attr(Button("Log in"))[0]
@@ -51,6 +50,28 @@ class Post:
         self._fill(username_button, self.username)
         self._fill(password_button, self.passwd)
         self._button_event(attr=login_button)
+
+
+        # Save Your Login Info?
+        wait_until(Button("Not Now").exists)
+        # find button
+        not_now_button = self._find_attr(Button("Not Now"))[0]
+        self._button_event(attr=not_now_button)
+
+
+        # Turn on Notifications?
+        wait_until(Button("Not Now").exists)
+        # find button
+        not_now_button = self._find_attr(Button("Not Now"))[0]
+        self._button_event(attr=not_now_button)
+
+
+        # share 
+        share_button = self._find_attr("//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
+        # find button
+        wait_until(share_button.exists)
+        self._button_event(attr=share_button)
+
 
     def _fill(self, attr: str, value: str):
         """
