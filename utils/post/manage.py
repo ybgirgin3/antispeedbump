@@ -43,9 +43,9 @@ class Post:
         # find buttons
 
         wait_until(Button("Log in").exists)  # wait for page fully loaded
-        username_button = self._find_attr('@username', with_s=True)
-        password_button = self._find_attr('@password', with_s=True)
-        login_button = self._find_attr(Button("Log in"))
+        username_button = self._find_attr('@username', with_s=True)[0]
+        password_button = self._find_attr('@password', with_s=True)[0]
+        login_button = self._find_attr(Button("Log in"))[0]
 
         # interact
         self._fill(username_button, self.username)
