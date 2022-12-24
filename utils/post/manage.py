@@ -1,14 +1,18 @@
 # built-in
-from typing import Optional
+from typing import Optional, Union
 import platform
 from pathlib import Path
 
 import os
 
 # external
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from helium import *
+
+import selenium
 import helium
 
 
@@ -21,26 +25,34 @@ class Post:
                  # username: str = "bekocankod"
                  # passwd: str = ")d3::b%&.X,u3^J"
                  image: Optional[dict] = {}) -> None:
-        driver_path = os.path.join(Path().parent.absolute(
-        ), f'configs/driver/{platform.system().lower()}/chromedriver')
-        self.driver = set_driver(webdriver.Chrome(driver_path))
-        self.get = get_driver()
-
         self.url = url
         self.username = username
         self.passwd = passwd
+
+        driver_path = os.path.join(Path().parent.absolute(
+        ), f'configs/driver/{platform.system().lower()}/chromedriver')
+
+        self.driver = set_driver(webdriver.Chrome(driver_path))
+        self.get = get_driver()
 
     def process(self):
         "main process"
         go_to(self.url)  #  go to login
 
         # login
-        self._fill(self.username, '@username')
-        self._fill(self.passwd, "@password")
-        self._button(
-            'press', '//*[@id="loginForm"]/div/div[3]/button', custom_attr=False)
+        # find buttons
 
-    def _fill(self, value: str, S: str = ""):
+        wait_until(Button("Log in").exists)  # wait for page fully loaded
+        username_button = self._find_attr('@username', with_s=True)
+        password_button = self._find_attr('@password', with_s=True)
+        login_button = self._find_attr(Button("Log in"))
+
+        # interact
+        self._fill(username_button, self.username)
+        self._fill(password_button, self.passwd)
+        self._button_event(attr=login_button)
+
+    def _fill(self, attr: str, value: str):
         """
             fill input fields with desired value
 
@@ -51,12 +63,9 @@ class Post:
                          : HTML attribute of field
 
         """
-        attr = self._find_attr(S)
-        print("attr in _fill: ", type(attr))
-        print("attr in _fill: ", attr)
         return write(value, into=attr)
 
-    def _button(self, command: str, S: Optional[str] = "", custom_attr=False):
+    def _button_event(self, command: str = "click", attr: str = ""):
         """
             @param: command : str
                             : click, press
@@ -69,31 +78,32 @@ class Post:
 
 
         """
-        if custom_attr:
-            btn = self._find_attr(S)[0]
-        else:
-            btn = S
-
         _command = getattr(helium, command)  # get function from helium
-        _command(btn)
-        # return _command(btn)
+        print("_command from helium: ", _command)
+        _command(attr)
 
-    def _find_attr(self, _S: str):
-        if _S != "":
-            return find_all(S(_S))
+    def _find_attr(self, attr, with_s: bool = False):
+        print("attr in find_all: ", attr, type(attr))
+        if with_s:
+            attr = S(attr)
+
+        ret = find_all(attr)
+        print("ret: ", ret)
+        return ret
 
     # selenium way to solve
-    # def _find_attr(self, _S: str):
-    #     if _S != "":
-    #         p = None
-    #         if _S.startswith('/') or _S.startswith("//"): # xpath
-    #             p = _S
-    #             _S = By.XPATH
+    # def _find_attr(self, select_by: str, attr: str, mapper: str):
+    #     ret_attr = None
+    #     if mapper.lower() == "selenium":
+    #         method = getattr(By, select_by.upper())
+    #         print("select element by: ", method)
+    #         wait = WebDriverWait(webdriver, 5)
+    #         ret_attr = webdriver.find_element(method, attr)
+    #     else:
+    #         sign = ""
+    #         if select_by == 'name':
+    #             sign = "@"
 
-    #         if _S.startswith("@"): # name
-    #             p = _S[1:]
-    #             _S = By.NAME
+    #         ret_attr = find_all(S(f"{sign}{attr}"))
 
-    #         # ret = find_all(S(_S))
-    #         ret = self.get.find_element(_S, p)
-    #         return ret
+    #     return ret_attr
