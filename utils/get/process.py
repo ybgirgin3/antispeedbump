@@ -4,7 +4,7 @@ import requests
 from .expressions import Expressions
 from utils.fp import FileProcess
 
-HEADERS = FileProcess("headers", root="configs").read()
+HEADERS = FileProcess("headers", root="configs/settings").read()
 
 
 class Process:
