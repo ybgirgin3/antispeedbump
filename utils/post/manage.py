@@ -115,9 +115,8 @@ class Post:
         desc_area = self._find_attr(
             attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
         wait_until(desc_area.exists)
-        desc = self.posting_content['description']
         self._fill(attr=desc_area,
-                   value=desc if 'description' in self.posting_content else "")
+                   value=self.posting_content['description'] if 'description' in self.posting_content else "")
 
         # Share post
         sb = Button("Share")
