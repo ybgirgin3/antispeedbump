@@ -6,10 +6,12 @@ from typing import Optional
 class Bot:
     def __init__(self,
                  target_user: Optional[str] = "",
-                 will_create_content: Optional[bool] = False
+                 will_create_content: Optional[bool] = False,
+                 post_index: int = 0
                  ):
         self.target_user: str | None = target_user
         self.will_create_content = will_create_content
+        self.post_index = post_index
 
     def get_data_from_another(self):
         # if file exists
@@ -25,7 +27,7 @@ class Bot:
 
         # extract content
         content = FileProcess(filename=self.target_user).read()
-        extracted: dict = Process(content=content).parse()
+        extracted: dict = Process(content=content, post_index=self.post_index).parse()
 
         if self.will_create_content:
             created = Process(content=extracted).create_content()

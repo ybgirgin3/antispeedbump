@@ -18,13 +18,16 @@ class Process:
 
     def __init__(self, username: Optional[str] = "",
                  custom_headers: Optional[dict] = {},
-                 content: Optional[dict] = {}
+                 content: Optional[dict] = {},
+                 post_index: int = 0
                  ):
         # vars
         self.username = username
         self.url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={self.username}"
         self.headers = self._complete_dict(custom_headers)
         self.content = content
+        self.post_index = post_index
+
 
     def _complete_dict(self, custom_headers):
         tmp = HEADERS
@@ -36,7 +39,7 @@ class Process:
         return resp.json()
 
     def parse(self):
-        return Expressions(data=self.content).parse()
+        return Expressions(data=self.content, post_index=self.post_index).parse()
 
     def create_content(self):
         media = self.content['media']

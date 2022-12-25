@@ -3,8 +3,9 @@ class Expressions:
     edge_sidecar_to_children -> sliding images
     """
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, post_index: int = 0):
         self.data = data
+        self.post_index = post_index
 
     def parse(self):
         self.data = self.data['data']['user']
@@ -21,7 +22,7 @@ class Expressions:
         ret['profile_picture'] = self.data['profile_pic_url_hd']
 
         media = self.data['edge_owner_to_timeline_media']['edges']
-        info = media[0]['node']
+        info = media[self.post_index]['node']
         code = f"{info['id']}_{info['shortcode']}"
         is_video = info['is_video']
 
