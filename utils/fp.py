@@ -5,7 +5,7 @@ import os
 
 
 class FileProcess:
-    def __init__(self, filename: str, *args, **kwargs) -> None:
+    def __init__(self, filename: Optional[str], *args, **kwargs) -> None:
         # create root dir if not exists
         self.root_dir = kwargs.get("root", "sites")
         pathlib.Path(self.root_dir).mkdir(parents=True, exist_ok=True)
@@ -22,7 +22,7 @@ class FileProcess:
 
     def write(self) -> None:
         "write json files"
-        print("filename in write")
+        print("filename in write: ")
         c2r = json.dumps(self.content, indent=2)
         with open(self.filepath, "w") as f:
             f.write(c2r)

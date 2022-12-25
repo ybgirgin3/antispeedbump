@@ -11,8 +11,11 @@ def cli():
 
 @cli.command()
 @click.option('--username', type=str, default="", help="username to dig profile in")
-def find(username: str):
-    ret = Bot(target_user=username).get_data_from_another()
+@click.option('--create', type=bool, default=False, help="Download last post or not")
+def find(username: str, create: bool):
+    ret = Bot(
+        target_user=username, will_create_content=create
+    ).get_data_from_another()
     pprint(ret)
 
 

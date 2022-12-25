@@ -22,6 +22,7 @@ class Expressions:
 
         media = self.data['edge_owner_to_timeline_media']['edges']
         info = media[0]['node']
+        code = f"{info['id']}_{info['shortcode']}"
         is_video = info['is_video']
 
         dimensions = [
@@ -31,6 +32,7 @@ class Expressions:
         download_url = info['video_url']
 
         ret["media"] = {
+            "code": code,
             "is_video": is_video,
             "dimensions": dimensions,
             "download_url": download_url
