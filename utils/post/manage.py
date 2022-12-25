@@ -24,7 +24,7 @@ class Post:
                  passwd: str = "uZZc4-YBY:5sVW?",
                  # username: str = "bekocankod"
                  # passwd: str = ")d3::b%&.X,u3^J"
-                 image: dict = {}) -> None:
+                 image: dict = None) -> None:
         self.url = url
         self.username = username
         self.passwd = passwd

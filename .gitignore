@@ -165,3 +165,6 @@ __pycache__/
 trash/
 sites/
 db/
+images/
+.DS_Store/
+flow/

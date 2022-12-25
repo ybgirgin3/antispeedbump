@@ -6,15 +6,14 @@ from typing import Optional
 class Bot:
     def __init__(self,
                  target_user: Optional[str] = "",
-                 image: Optional[dict] = {}
                  ):
-        self.target_user = target_user
-        self.image = image
+        self.target_user: str | None = target_user
 
     def get_data_from_another(self):
         # if file exists
-        content = None
-        is_site_exist = FileProcess(filename=self.target_user).is_site_exists()
+        content: None = None
+        is_site_exist: bool = FileProcess(
+            filename=self.target_user).is_site_exists()
         if not is_site_exist:
             "if username is new create user data"
             resp: dict = Process(username=self.target_user).fetch()
@@ -22,9 +21,16 @@ class Bot:
 
         # extract content
         content = FileProcess(filename=self.target_user).read()
-        extracted = Process(content=content).parse()
+        extracted: dict = Process(content=content).parse()
         return extracted
 
     def post_content(self):
-        ret = Post(image=self.image).scenario()
-        return ret
+        flow: list = FileProcess(filename='post', root="flow").read()
+
+        Post(image=flow[0]).scenario()
+
+        flow.pop(0)
+
+        flow = FileProcess(filename='post', root="flow", content=flow).write()
+
+        # return ret

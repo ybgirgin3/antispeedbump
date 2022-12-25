@@ -1,10 +1,12 @@
 import click
+from utils import FileProcess
 from bot import Bot
 
 
 @click.group()
 def cli():
     pass
+
 
 @cli.command()
 @click.option('--username', type=str, default="", help="username to dig profile in")
@@ -14,19 +16,10 @@ def find(username: str):
 
 
 @cli.command()
-@click.option('--path', type=str, default=False)
-@click.option('--description', type=str, default=False)
-def post(path: str, description: str):
-    image = {
-            "path":  path,
-            "description": description
-            }
-    ret = Bot(image=image).post_content()
+def post():
+    ret = Bot().post_content()
     print(ret)
-
-
 
 
 if __name__ == '__main__':
     cli()
-
