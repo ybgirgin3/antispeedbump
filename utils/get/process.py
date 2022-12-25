@@ -28,9 +28,9 @@ class Process:
         self.content = content
         self.post_index = post_index
 
-
     def _complete_dict(self, custom_headers):
         tmp = HEADERS
+        tmp.update({"Referer": f"https://www.instagram.com/{self.username}/"})
         tmp.update(custom_headers)
         return tmp
 
