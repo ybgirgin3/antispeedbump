@@ -1,4 +1,8 @@
 class Expressions:
+    """
+    edge_sidecar_to_children -> sliding images
+    """
+
     def __init__(self, data: dict):
         self.data = data
 
@@ -15,7 +19,22 @@ class Expressions:
         ret['total_follower_count'] = self.data['edge_followed_by']['count']
         ret['mutual_follower_count'] = self.data['edge_mutual_followed_by']['count']
         ret['profile_picture'] = self.data['profile_pic_url_hd']
-        #ret["post_count"] = self.data['edge_owner_to_timeline_media']
+
+        media = self.data['edge_owner_to_timeline_media']['edges']
+        info = media[0]['node']
+        is_video = info['is_video']
+
+        dimensions = [
+            info['dimensions']['height'],
+            info['dimensions']['width']
+        ]
+        download_url = info['video_url']
+
+        ret["media"] = {
+            "is_video": is_video,
+            "dimensions": dimensions,
+            "download_url": download_url
+        }
 
         return ret
 

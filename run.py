@@ -1,6 +1,7 @@
-import click
 from utils import FileProcess
+from pprint import pprint
 from bot import Bot
+import click
 
 
 @click.group()
@@ -12,7 +13,7 @@ def cli():
 @click.option('--username', type=str, default="", help="username to dig profile in")
 def find(username: str):
     ret = Bot(target_user=username).get_data_from_another()
-    print(ret)
+    pprint(ret)
 
 
 @cli.command()
