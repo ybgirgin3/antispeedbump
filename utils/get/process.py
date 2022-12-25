@@ -42,12 +42,13 @@ class Process:
         media = self.content['media']
         download_url = media['download_url']
         code = media['code']
+        suffix = media['suffix']
+        is_video = media['is_video']
         resp = requester(url=download_url, stream=True)
 
         ret = {
-            "path": f'/Users/berkay/Documents/workspace/Data/antispeedbump/posts/{code}.mp4',
-            "description": "American Bull"
-        }
+            "path": f'/Users/berkay/Documents/workspace/Data/antispeedbump/posts/{code}.{suffix}',
+            "is_video": is_video}
 
         with open(ret['path'], "wb") as f:
             f.write(resp.content)

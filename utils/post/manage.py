@@ -28,7 +28,7 @@ class Post:
         self.url = url
         self.username = username
         self.passwd = passwd
-        self.image = image
+        self.posting_content = image
 
         driver_path = os.path.join(Path().parent.absolute(
         ), f'configs/driver/{platform.system().lower()}/chromedriver')
@@ -75,7 +75,14 @@ class Post:
         self._button_event(attr=share_button)
 
         # attach file
-        drag_file(self.image['path'], to="Drag photos and videos here")
+        drag_file(self.posting_content['path'],
+                  to="Drag photos and videos here")
+
+        # is_video?
+        if self.posting_content['is_video']:
+            ok = Button("OK")
+            wait_until(ok.exists)
+            self._button_event(attr=ok)
 
         # *** Aspect Ration 
         # crop button
@@ -105,10 +112,12 @@ class Post:
         # *** Write a Description
         # find description area
         time.sleep(3)
-        desc_area = self._find_attr(attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
+        desc_area = self._find_attr(
+            attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
         wait_until(desc_area.exists)
-        self._fill(attr=desc_area, value=self.image['description'])
-
+        desc = self.posting_content['description']
+        self._fill(attr=desc_area,
+                   value=desc if 'description' in self.posting_content else "")
 
         # Share post
         sb = Button("Share")
@@ -121,7 +130,6 @@ class Post:
         # wait_until(sb.exists)
         # if self._find_attr(t.exists):
         #     print("Post Sharing Successfull")
-
 
     def _fill(self, attr: str, value: str):
         """
@@ -161,4 +169,3 @@ class Post:
         ret = find_all(attr)
         print("ret: ", ret)
         return ret
-

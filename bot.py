@@ -20,22 +20,22 @@ class Bot:
             "if username is new create user data"
             resp: dict = Process(username=self.target_user).fetch()
             FileProcess(filename=self.target_user, content=resp).write()
+        else:
+            print(f"{self.target_user}'s file already exists. reading from cache")
 
         # extract content
         content = FileProcess(filename=self.target_user).read()
         extracted: dict = Process(content=content).parse()
 
         if self.will_create_content:
-            print(":Content Creating:")
             created = Process(content=extracted).create_content()
-            print(":Content Created:")
-            print(":Content Adding to flow.json:")
             flow: list = FileProcess(filename='post', root="flow").read()
-            print("old flow: ", flow)
-            flow.append(created)
-            print("new flow: ", flow)
-            flow = FileProcess(filename='post', root="flow",
-                               content=flow).write()
+            if created not in flow:
+                flow.append(created)
+                flow = FileProcess(filename='post', root="flow",
+                                   content=flow).write()
+            else:
+                print("content already in flow")
 
         return extracted
 

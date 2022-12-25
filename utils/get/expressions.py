@@ -29,13 +29,13 @@ class Expressions:
             info['dimensions']['height'],
             info['dimensions']['width']
         ]
-        download_url = info['video_url']
 
         ret["media"] = {
             "code": code,
             "is_video": is_video,
+            "suffix": "mp4" if is_video else "jpeg",
             "dimensions": dimensions,
-            "download_url": download_url
+            "download_url": info['video_url'] if is_video else info["display_url"]
         }
 
         return ret
