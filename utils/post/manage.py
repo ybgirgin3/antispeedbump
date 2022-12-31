@@ -17,28 +17,126 @@ import helium
 
 
 class Post:
-
     def __init__(self,
                  url: str = "www.instagram.com",
                  username: str = "koddeneme260",
                  passwd: str = "uZZc4-YBY:5sVW?",
                  # username: str = "bekocankod"
                  # passwd: str = ")d3::b%&.X,u3^J"
-                 image: dict = None) -> None:
+                 post_information: dict = None,
+                 device: Optional[str] = 'desktop',
+                 mobile_emulation={
+                     "deviceMetrics": {
+                         "width": 360,
+                         "height": 640,
+                         "mobile": True,
+                         "deviceScaleFactor": 0
+                     },
+                     "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
+                 }
+                 ) -> None:
         self.url = url
         self.username = username
         self.passwd = passwd
-        self.posting_content = image
+        self.inf = post_information
+
+        chrome_options = None
+
+        if device == 'mobile':
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option(
+                "mobileEmulation", mobile_emulation)
 
         driver_path = os.path.join(Path().parent.absolute(
         ), f'configs/driver/{platform.system().lower()}/chromedriver')
 
-        self.driver = set_driver(webdriver.Chrome(driver_path))
+        self.driver = set_driver(webdriver.Chrome(
+            driver_path, options=chrome_options))
         self.get = get_driver()
 
-    def scenario(self):
-        "main process"
-        go_to(self.url)  #  go to login
+    def post(self) -> bool:
+        try:
+            # *** LOGIN
+            self.login()
+
+            # *** share
+            share_button = self._find_attr(
+                "//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
+            # find button
+            wait_until(share_button.exists)
+            self._button_event(attr=share_button)
+
+            # attach file
+            drag_file(self.inf['path'],
+                      to="Drag photos and videos here")
+
+            # is_video?
+            if self.inf['is_video']:
+                ok = Button("OK")
+                wait_until(ok.exists)
+                self._button_event(attr=ok)
+
+            # *** Aspect Ration 
+            # crop button
+            crop_button = self._find_attr(
+                "//*[name()='svg' and @aria-label='Select crop']", with_s=True)[0]
+            wait_until(crop_button.exists)
+            self._button_event(attr=crop_button)
+
+            # original button
+            org = Button("Original")
+            wait_until(org.exists)
+            self._button_event(attr=org)
+
+            # next session (two times in a row)
+            # first
+            ns = Button("Next")
+            wait_until(ns.exists)
+            self._button_event(attr=ns)
+
+            time.sleep(3)
+
+            # second
+            ns = Button("Next")
+            wait_until(ns.exists)
+            self._button_event(attr=ns)
+
+            # *** Write a Description
+            # find description area
+            time.sleep(3)
+            desc_area = self._find_attr(
+                attr="//*[name()='textarea' and @aria-label='Write a caption...']",
+                with_s=True)[0]
+            wait_until(desc_area.exists)
+            self._fill(attr=desc_area,
+                       value=self.inf['description'] if 'description' in
+                       self.inf else "")
+
+            # Share post
+            sb = Button("Share")
+            wait_until(sb.exists)
+            self._button_event(attr=sb)
+
+            return True
+
+        except Exception as e:
+            print("Error while posting content: ", e)
+            return False
+
+    def story(self) -> bool:
+        # *** LOGIN
+        self.login()
+
+        # *** SHARE
+        share_button = self._find_attr(
+            "//*[name()='svg' and @aria-label='Home']", with_s=True)[0]
+        wait_until(share_button.exists)
+        self._button_event(attr=share_button)
+
+        return False
+
+    def login(self):
+        go_to(self.url)  # go to url
 
         # ***  LOGIN 
         wait_until(Button("Log in").exists)  # wait for page fully loaded
@@ -66,69 +164,6 @@ class Post:
         # find button
         not_now_button = self._find_attr(nn)[0]
         self._button_event(attr=not_now_button)
-
-        # *** share
-        share_button = self._find_attr(
-            "//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
-        # find button
-        wait_until(share_button.exists)
-        self._button_event(attr=share_button)
-
-        # attach file
-        drag_file(self.posting_content['path'],
-                  to="Drag photos and videos here")
-
-        # is_video?
-        if self.posting_content['is_video']:
-            ok = Button("OK")
-            wait_until(ok.exists)
-            self._button_event(attr=ok)
-
-        # *** Aspect Ration 
-        # crop button
-        crop_button = self._find_attr(
-            "//*[name()='svg' and @aria-label='Select crop']", with_s=True)[0]
-        wait_until(crop_button.exists)
-        self._button_event(attr=crop_button)
-
-        # original button
-        org = Button("Original")
-        wait_until(org.exists)
-        self._button_event(attr=org)
-
-        # next session (two times in a row)
-        # first
-        ns = Button("Next")
-        wait_until(ns.exists)
-        self._button_event(attr=ns)
-
-        time.sleep(3)
-
-        # second
-        ns = Button("Next")
-        wait_until(ns.exists)
-        self._button_event(attr=ns)
-
-        # *** Write a Description
-        # find description area
-        time.sleep(3)
-        desc_area = self._find_attr(
-            attr="//*[name()='textarea' and @aria-label='Write a caption...']", with_s=True)[0]
-        wait_until(desc_area.exists)
-        self._fill(attr=desc_area,
-                   value=self.posting_content['description'] if 'description' in self.posting_content else "")
-
-        # Share post
-        sb = Button("Share")
-        wait_until(sb.exists)
-        self._button_event(attr=sb)
-
-        # Your post has been shared?
-        # time.sleep(3)
-        # t = Text("Your post has been shared.")
-        # wait_until(sb.exists)
-        # if self._find_attr(t.exists):
-        #     print("Post Sharing Successfull")
 
     def _fill(self, attr: str, value: str):
         """

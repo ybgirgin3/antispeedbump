@@ -13,6 +13,15 @@ class FileProcess:
         self.filepath = os.path.join(self.root_dir, f'{filename}.json')
         self.content = kwargs.get('content', {})
 
+    def __len__(self) -> dict:
+        ret = dict()
+        items = os.listdir(self.root_dir)
+        ret[self.root_dir] = {
+            "len": len(items),
+            "items": items
+        }
+        return ret
+
     def read(self) -> dict:
         "read json"
         with open(self.filepath, "r") as f:

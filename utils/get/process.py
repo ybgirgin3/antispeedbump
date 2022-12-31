@@ -19,7 +19,8 @@ class Process:
     def __init__(self, username: Optional[str] = "",
                  custom_headers: Optional[dict] = {},
                  content: Optional[dict] = {},
-                 post_index: int = 0
+                 post_index: int = 0,
+                 shortcode: Optional[str] = ""
                  ):
         # vars
         self.username = username
@@ -27,6 +28,7 @@ class Process:
         self.headers = self._complete_dict(custom_headers)
         self.content = content
         self.post_index = post_index
+        self.shortcode = shortcode
 
     def _complete_dict(self, custom_headers):
         tmp = HEADERS
@@ -39,7 +41,7 @@ class Process:
         return resp.json()
 
     def parse(self):
-        return Expressions(data=self.content, post_index=self.post_index).parse()
+        return Expressions(data=self.content, post_index=self.post_index, shortcode=self.shortcode).parse()
 
     def create_content(self):
         media = self.content['media']
