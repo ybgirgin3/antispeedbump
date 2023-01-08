@@ -2,19 +2,13 @@ from typing import Optional
 import requests
 
 from .expressions import Expressions
-from utils.fp import FileProcess
+from ..utils import FileProcess, complete_dict
 
-HEADERS = FileProcess("headers", root="configs/settings").read()
-
-
-def requester(url, *args, **kwargs):
-    "request process"
-    resp = requests.get(url=url, headers=kwargs.get('headers'))
-    return resp
+GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
 
 
 class Process:
-    "Fetching and Parsing Control Center"
+    """Fetching and Parsing Control Center"""
 
     def __init__(self, username: Optional[str] = "",
                  custom_headers: Optional[dict] = {},
@@ -25,31 +19,38 @@ class Process:
         # vars
         self.username = username
         self.url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={self.username}"
-        self.headers = self._complete_dict(custom_headers)
+        # tmp.update({"Referer": f"https://www.instagram.com/{self.username}/"})
+        _custom_headers = {
+            "referer": f"https://www.instagram.com/{self.username}/",
+        }
+        # update headers
+        custom_headers.update(_custom_headers)
+        self.headers = complete_dict(
+            raw_headers=GET_HEADERS,
+            custom_headers=custom_headers)
+
         self.content = content
         self.post_index = post_index
         self.shortcode = shortcode
 
-    def _complete_dict(self, custom_headers):
-        tmp = HEADERS
-        tmp.update({"Referer": f"https://www.instagram.com/{self.username}/"})
-        tmp.update(custom_headers)
-        return tmp
-
     def fetch(self):
-        resp = requester(self.url, headers=self.headers)
-        return resp.json()
+        # resp = requester(self.url, headers=self.headers)
+        resp: requests.Response = requests.get(
+            url=self.url, headers=self.headers)
+        return resp
+        # return resp.json()
 
-    def parse(self):
+    def parse(self) -> dict:
         return Expressions(data=self.content, post_index=self.post_index, shortcode=self.shortcode).parse()
 
-    def create_content(self):
+    def create_content(self) -> dict:
         media = self.content['media']
         download_url = media['download_url']
         code = media['code']
         suffix = media['suffix']
         is_video = media['is_video']
-        resp = requester(url=download_url, stream=True)
+        # resp = requester(url=download_url)
+        resp: requests.Response = requests.get(url=download_url)
 
         ret = {
             "path": f'/Users/berkay/Documents/workspace/Data/antispeedbump/posts/{code}.{suffix}',

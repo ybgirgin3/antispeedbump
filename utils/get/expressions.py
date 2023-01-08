@@ -11,7 +11,7 @@ class Expressions:
                  data: dict,
                  post_index: Optional[int] = None,
                  shortcode: Optional[str] = ""
-                 ):
+                 ) -> None:
         self.data = data['data']['user']
         self.shortcode = shortcode
         self.medias = self.data['edge_owner_to_timeline_media']['edges']
@@ -22,7 +22,7 @@ class Expressions:
         else:
             self.post_index = post_index
 
-    def parse(self):
+    def parse(self) -> dict:
         ret = dict()
 
         # generic
