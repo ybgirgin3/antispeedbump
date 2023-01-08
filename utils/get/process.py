@@ -49,7 +49,6 @@ class Process:
         code = media['code']
         suffix = media['suffix']
         is_video = media['is_video']
-        # resp = requester(url=download_url)
         resp: requests.Response = requests.get(url=download_url)
 
         ret = {

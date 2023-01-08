@@ -46,34 +46,17 @@ class FileProcess:
 
 
 # util
-GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
-
-
-def requester(url: str, method: str = 'get', **kwargs: dict):
-    """request process"""
-    _method = getattr(requests, method)
-    resp: Response = _method(url=url,
-                             headers=kwargs.get('headers', {}),
-                             data=kwargs.get('payload', {}),
-                             cookies=kwargs.get('cookies', {}))
-    return resp
-
-
-def delete(item_p: dict):
-    os.remove(item_p['path'])
+# GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
 
 
 def complete_dict(raw_headers: dict = None,
                   **kwargs
                   ):
-    # defaults
-    defaults = [
-        kwargs.get("referer", ""),
-        kwargs.get('custom_headers', {})
-    ]
-
-    for val in defaults:
+    # defaults
+    for key in kwargs:
+        val = kwargs.get(key, "")
         raw_headers.update(val)
+
     return raw_headers
 
 
