@@ -1,5 +1,6 @@
-from utils import FileProcess, Process, Post, _delete
+from utils import FileProcess, Process, Post
 from typing import Optional
+import os
 
 
 class Bot:
@@ -29,17 +30,17 @@ class Bot:
             print(f"{self.target_user}'s file already exists. reading from cache")
 
         # extract content
-        content = FileProcess(filename=self.target_user).read()
+        content: dict = FileProcess(filename=self.target_user).read()
         extracted: dict = Process(
             content=content, post_index=self.post_index).parse()
 
         if self.will_create_content:
             created = Process(content=extracted).create_content()
-            flow: list = FileProcess(filename='post', root="flow").read()
+            flow: dict = FileProcess(filename='post', root="flow").read()
             if created not in flow:
                 flow.append(created)
-                flow = FileProcess(filename='post', root="flow",
-                                   content=flow).write()
+                FileProcess(filename='post', root="flow",
+                            content=flow).write()
             else:
                 print("content already in flow")
 
@@ -48,26 +49,27 @@ class Bot:
     def post_content(self):
         def _post():
             # read flow file
-            flow: list = FileProcess(filename='post', root="flow").read()
+            flow: dict = FileProcess(filename='post', root="flow").read()
 
             # post content
             assert Post(post_information=flow[0]).post(
             ) == True, "post did not return True"
 
             # extract sent item and delete
-            _delete(flow.pop(0))
+            os.remove(flow.pop(0))
 
             # re-write item
-            flow = FileProcess(
-                filename='post', root="flow", content=flow).write()
+            FileProcess(filename='post', root="flow", content=flow).write()
 
         def _story():
-            flow: list = FileProcess(filename='post', root="flow").read()
+            flow: dict = FileProcess(filename='post', root="flow").read()
+            print("flow file content in story: ", flow)
+
             assert Post(post_information=flow[0], device='mobile').story(
-            ) == True, "story did not return True"
+            ), "story did not return True"
 
             # extract sent item and delete
-            # _delete(flow.pop(0))
+            os.remove(flow.pop(0))
 
         try:
             if self.post_type == "post":
