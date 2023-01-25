@@ -10,12 +10,17 @@
 # import json
 # import re
 
-from utils.post._story import Story 
-# 
-st = Story()
-ret = st.login()
-# st.extract(ret)
-print(ret)
+from commons import SQL_ALCHEMY_ENGINES, _create_table
+from commons.models.schemas import Sites
+
+_create_table("Sites", SQL_ALCHEMY_ENGINES['sites'])
+
+# from utils.post._story import Story 
+# # 
+# st = Story()
+# ret = st.login()
+# # st.extract(ret)
+# print(ret)
 
 # payload = {
 #     "username": "SessionDeneme",
@@ -120,3 +125,10 @@ print(ret)
 #     soup = BeautifulSoup(html, "html.parser")
 #     scripts = soup.find_all("script")
 #     print(scripts)
+
+# from commons import session
+# from commons.models.schemas import Sites
+# from utils import is_site_still_valid
+# 
+# with session() as sess:
+#     is_site_still_valid(sess, Sites, 'asd')
