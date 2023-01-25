@@ -1,6 +1,9 @@
-from utils import FileProcess, Process, Post
-from typing import Optional
 import os
+from typing import Optional
+
+from commons import session
+from utils import MediaProcess, Post, DBProcess
+from commons.models.schemas import Sites
 
 
 class Bot:
@@ -17,39 +20,52 @@ class Bot:
         self.shortcode = shortcode
         self.post_type = post_type
 
+        # create session
+
     def get_data_from_another(self):
-        # if file exists
-        content: None = None
-        is_site_exist: bool = FileProcess(
-            filename=self.target_user).is_site_exists()
-        if not is_site_exist:
-            "if username is new create user data"
-            resp: dict = Process(username=self.target_user).fetch()
-            FileProcess(filename=self.target_user, content=resp).write()
-        else:
-            print(f"{self.target_user}'s file already exists. reading from cache")
+        with session() as sess:
 
-        # extract content
-        content: dict = FileProcess(filename=self.target_user).read()
-        extracted: dict = Process(
-            content=content, post_index=self.post_index).parse()
+            # create instance
+            content = {}
+            db_process = DBProcess(sess=sess, username=self.target_user)
+            media_process = MediaProcess(username=self.target_user)
 
-        if self.will_create_content:
-            created = Process(content=extracted).create_content()
-            flow: dict = FileProcess(filename='post', root="flow").read()
-            if created not in flow:
-                flow.append(created)
-                FileProcess(filename='post', root="flow",
-                            content=flow).write()
+            def _fetch(u_w: str):
+                content: dict = media_process.fetch()
+                extracted_content: dict = media_process.parse(content=content)
+
+                if self.will_create_content:
+                    if u_w == 'write':
+                        db_process.write(content, extracted_content)
+                    if u_w == 'update':
+                        db_process.update(content, extracted_content)
+
+                return extracted_content
+
+            # if file is not exists create
+            is_exists = db_process.is_site_exists()
+            if not is_exists:
+                #content: dict = media_process.fetch()
+                #extracted_content: dict = media_process.parse(content=content)
+                extracted_content = _fetch(u_w='write')
+
+            # if file exists
             else:
-                print("content already in flow")
+                # if look for date if valid
+                if valid := db_process.is_site_still_valid(model=Sites):
+                    print(
+                        f"{self.target_user}'s file already exists. and valid. reading from cache")
+                    extracted_content: dict = db_process.read(column='extracted_data')
+                else:
+                    extracted_content = _fetch(u_w='update')
 
-        return extracted
+            # extract content instance
+            return extracted_content
 
-    def post_content(self):
+    def post_content(self) -> None:
         def _post():
             # read flow file
-            flow: dict = FileProcess(filename='post', root="flow").read()
+            flow: list[dict] = DBProcess(filename='post', root="flow").read()
 
             # post content
             assert Post(post_information=flow[0]).post(
@@ -59,10 +75,10 @@ class Bot:
             os.remove(flow.pop(0))
 
             # re-write item
-            FileProcess(filename='post', root="flow", content=flow).write()
+            DBProcess(filename='post', root="flow", content=flow).write()
 
         def _story():
-            flow: dict = FileProcess(filename='post', root="flow").read()
+            flow: dict = DBProcess(filename='post', root="flow").read()
             print("flow file content in story: ", flow)
 
             assert Post(post_information=flow[0], device='mobile').story(
