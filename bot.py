@@ -10,14 +10,10 @@ class Bot:
     def __init__(self,
                  target_user: Optional[str] = "",
                  will_create_content: Optional[bool] = False,
-                 post_index: Optional[int] = 0,
-                 shortcode: Optional[str] = "",
                  post_type: Optional[str] = "post"
                  ):
         self.target_user = target_user
         self.will_create_content = will_create_content
-        self.post_index = post_index
-        self.shortcode = shortcode
         self.post_type = post_type
 
         # create session

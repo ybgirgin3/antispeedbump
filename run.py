@@ -1,8 +1,13 @@
 from pprint import pprint
+from pathlib import Path
+import os
 
 import click
 
 from bot import Bot
+
+
+
 
 
 @click.group()
@@ -13,13 +18,14 @@ def cli():
 @cli.command()
 @click.option('--username', type=str, default="", help="username to dig profile in")
 @click.option('--collect', is_flag=True, default=False, help="Download last post or not")
-@click.option('--post_index', type=int, default=0, help="post_index of content")
-@click.option('--shortcode', type=str, default="", help="shortcode of content")
-def find(username: str, collect: bool, post_index: int, shortcode: str):
+def find(username: str, collect: bool):
+    if not Path("antispeedbump.db").exists():
+        from commons import SQL_ALCHEMY_ENGINES, _create_table
+        _create_table("Sites", SQL_ALCHEMY_ENGINES['sites'])
+
+
     ret = Bot(target_user=username,
               will_create_content=collect,
-              post_index=post_index,
-              shortcode=shortcode
               ).get_data_from_another()
     print(ret['full_name'], ret['profile_picture'])
 
