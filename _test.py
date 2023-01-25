@@ -6,9 +6,16 @@
 # from requests import Response
 # import json
 # import requests
-from bs4 import BeautifulSoup
-import json
-import re
+# from bs4 import BeautifulSoup
+# import json
+# import re
+
+from utils.post._story import Story 
+# 
+st = Story()
+ret = st.login()
+# st.extract(ret)
+print(ret)
 
 # payload = {
 #     "username": "SessionDeneme",
@@ -18,14 +25,14 @@ import re
 # url = "https://www.instagram.com/accounts/login/"
 # url = "https://www.instagram.com/api/v1/media/configure/"
 
-with open("sess.html", "r") as f:
-    html = f.read()
-
-
-territories = json.loads(
-    re.search(r"var raw = (\{.*\})", html)
-)
-print(territories)
+# with open("sess.html", "r") as f:
+#     html = f.read()
+# 
+# 
+# territories = json.loads(
+#     re.search(r"var raw = (\{.*\})", html)
+# )
+# print(territories)
 
 # html = '<input type="hidden" name="csrfToken" value="ajax:SOME_TOKEN"/>'
 # soup = BeautifulSoup(html)
@@ -102,3 +109,14 @@ print(territories)
 #content = FileProcess(filename=username).read()
 #ret = Process.Parse(content=content).find_val()
 # pprint(ret)
+
+
+
+# from bs4 import BeautifulSoup
+# 
+# html = 'login.html'
+# with open(html, "r") as html:
+# 
+#     soup = BeautifulSoup(html, "html.parser")
+#     scripts = soup.find_all("script")
+#     print(scripts)
