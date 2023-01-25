@@ -1,7 +1,8 @@
-from utils import FileProcess
 from pprint import pprint
-from bot import Bot
+
 import click
+
+from bot import Bot
 
 
 @click.group()
@@ -20,20 +21,13 @@ def find(username: str, collect: bool, post_index: int, shortcode: str):
               post_index=post_index,
               shortcode=shortcode
               ).get_data_from_another()
-    pprint(ret)
+    print(ret['full_name'], ret['profile_picture'])
 
 
 @cli.command()
 @click.option('--type', type=str, default="post", help="standart post")
 def post(type: str):
     ret = Bot(post_type=type).post_content()
-    pprint(ret)
-
-
-@cli.command()
-@click.option('--root', type=str, default="sites", help="standart post")
-def count(root: str):
-    ret = FileProcess(filename="", root=root).__len__()
     pprint(ret)
 
 
