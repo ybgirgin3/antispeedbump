@@ -8,12 +8,12 @@
   "sec-fetch-dest": "empty",
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-origin",
-  "viewport-width": "914",
+  "viewport-width": "905",
   "x-asbd-id": "198387",
-  "x-csrftoken": "5qF75sHk0uZsiMWPkkjPhQePzFULUWMU",
+  "x-csrftoken": "LwTuL9KezONhvsYkcL9tfBjxHcyREUky",
   "x-ig-app-id": "936619743392459",
-  "x-ig-www-claim": "hmac.AR2zUYz0rYW6os9Rtzk01H_vJ3RvvmQLCySJx558ZLe5aDG2",
+  "x-ig-www-claim": "hmac.AR2Eeqxxor3oCtcOHw-GgdN7pOQ-CWWplPB6LyBmU-xOowtJ",
   "x-requested-with": "XMLHttpRequest",
-  "cookie": "mid=Y5ZI2QAEAAH4SC_6fRNydmN_pF1l; ig_nrcb=1; ig_did=7C4B0CE8-6630-416C-892E-5C1760B0B32D; datr=2EiWY2REn8xtJBQOwMOZT2pD; dpr=2; csrftoken=5qF75sHk0uZsiMWPkkjPhQePzFULUWMU; ds_user_id=56834290108; sessionid=56834290108%3AmsvmGSOIUgEg4A%3A9%3AAYdFwEr1oEwiouLqSjrBEob7UnNkA_Sl8pRR1GrlXA; rur=\"ASH\\05456834290108\\0541703517342:01f78ff1fedfed0a2105d619ee1e21eb5251c70d1df3cd7dfc605a6afeb83967e0941535\"",
+  "cookie": "mid=Y5ZI2QAEAAH4SC_6fRNydmN_pF1l; ig_nrcb=1; ig_did=7C4B0CE8-6630-416C-892E-5C1760B0B32D; datr=2EiWY2REn8xtJBQOwMOZT2pD; csrftoken=LwTuL9KezONhvsYkcL9tfBjxHcyREUky; ds_user_id=57603119263; dpr=1; sessionid=57603119263%3AcqzfKSpyK99PC1%3A10%3AAYcj_ruRQHJCBZhCX7c16gDcw-OzKjQ6PIqw_vkfvw; rur=\"NAO\\05457603119263\\0541706213987:01f78a6e5b52104000268aeaa64dcabc2b596eb3a89a8b3bf67bf480c8d30b078b48bc49\"",
   "Referrer-Policy": "strict-origin-when-cross-origin"
 }
