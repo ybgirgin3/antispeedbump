@@ -1,2 +1,2 @@
-from .process import Process
+from .process import MediaProcess
 from .expressions import Expressions
