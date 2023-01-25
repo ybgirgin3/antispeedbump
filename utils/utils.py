@@ -1,58 +1,100 @@
-import io
-from typing import Optional
-import pathlib
+import datetime
 import json
-import os
-import requests
-from requests import Response
 from typing import Optional
 
+from commons.models.schemas import Sites
+from sqlalchemy import insert
+from sqlalchemy.orm import Session
 
-class FileProcess:
-    def __init__(self, filename: Optional[str], *args, **kwargs) -> None:
-        # create root dir if not exists
-        self.root_dir = kwargs.get("root", "sites")
-        pathlib.Path(self.root_dir).mkdir(parents=True, exist_ok=True)
 
-        self.filepath = os.path.join(self.root_dir, f'{filename}.json')
-        self.content = kwargs.get('content', {})
+class DBProcess:
+    def __init__(self,
+                 sess: Session,
+                 username: Optional[str],
+                 ) -> None:
+        self.session = sess
+        self.username = username
 
-    def __len__(self) -> dict:
-        ret = dict()
-        items = os.listdir(self.root_dir)
-        ret[self.root_dir] = {
-            "len": len(items),
-            "items": items
-        }
-        return ret
+    def __len__(self):  # -> Union[int, float]:
+        q = "select count(*) from sites"
+        count = self.session.execute(q)
+        return count
 
-    def read(self) -> dict:
+    def read(self, column: str = 'extracted_data') -> list[dict]:
         """read json"""
-        with open(self.filepath, "r") as f:
-            ret = json.load(f)
+        s = None
+        if column == "data":
+            s = Sites.data
+        if column == 'extracted_data':
+            s = Sites.extracted_data
 
-        return ret
+        d = self.session.query(s).where(
+            Sites.username == self.username
+        ).first()
+        return json.loads(d[0])
 
-    def write(self) -> None:
+    def write(self, content, extracted_content) -> None:
         """write json files"""
+        _d = [
+            {
+                'username': self.username,
+                'data': json.dumps(content, indent=2),
+                'extracted_data': json.dumps(extracted_content, indent=2),
+                'last_update': datetime.datetime.today()
+            }
+        ]
+
         print("filename in write: ")
-        c2r = json.dumps(self.content, indent=2)
-        with open(self.filepath, "w") as f:
-            f.write(c2r)
+        self.session.execute(insert(Sites), _d)
+        self.session.commit()
+
+    def update(self, content, extracted_content) -> None:
+        """update json files"""
+        _d = {
+            # 'username': self.username,
+            'data': json.dumps(content, indent=2),
+            'extracted_data': json.dumps(extracted_content, indent=2),
+            'last_update': datetime.datetime.today()
+        }
+
+        self.session.query(Sites).update(
+            _d
+        )
+        self.session.commit()
+
 
     def is_site_exists(self) -> bool:
-        "control if file exists"
-        return pathlib.Path(self.filepath).is_file()
+        """control if file exists"""
+        return bool(self.session.query(Sites).where(
+            Sites.username == self.username
+        ).first())
 
+    def is_site_still_valid(self,
+                            model: Sites,
+                            ) -> bool:
+        d = self.session.query(model.last_update).where(
+            model.username == self.username
+        ).first()
+        d = dict(d)
+
+        # datetime.datetime.strptime(d, "%Y-%m-%d")
+
+        return True \
+            if (datetime.datetime.today() - d['last_update']).days <= 2 \
+            else False
+
+
+# DB OLMADIGI ICIN SQL CALISMIYOR DB'YI ILK ETAP DA OLUSTURMAK LAZIM
+#####
 
 # util
-# GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
+# GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
 
 
 def complete_dict(raw_headers: dict = None,
                   **kwargs
                   ):
-    # defaults
+    #  defaults
     for key in kwargs:
         val = kwargs.get(key, "")
         raw_headers.update(val)
