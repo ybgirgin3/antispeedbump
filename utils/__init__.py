@@ -1,6 +1,6 @@
 # get
 import os
-from .get import Process
+from .get import MediaProcess
 
 # post
 from .post import Post
