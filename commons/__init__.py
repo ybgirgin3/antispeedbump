@@ -12,9 +12,9 @@ class UnknownDBError(Exception):
 
 
 SQL_ALCHEMY_ENGINES = {
-    "sites": create_engine(
+    "antispeedbump": create_engine(
         "sqlite:////Users/berkay/Documents/workspace/Data/antispeedbump/antispeedbump.db",
-        echo=True
+        echo=False
     )
 }
 
@@ -27,14 +27,14 @@ def _create_table(model: str, db_engine: Engine):
     model.__table__.create(db_engine)
 
 
-def engine(db_name: str = "sites") -> Engine:
+def engine(db_name: str = "antispeedbump") -> Engine:
     try:
         return SQL_ALCHEMY_ENGINES[f'{db_name}']
     except KeyError:
         raise UnknownDBError
 
 
-def session(db_name: str = "sites") -> Session:
+def session(db_name: str = "antispeedbump") -> Session:
     return Session(
         engine(db_name),
         expire_on_commit=False
