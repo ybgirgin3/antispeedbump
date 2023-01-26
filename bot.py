@@ -48,30 +48,48 @@ class Bot:
             # if file exists
             else:
                 # if look for date if valid
-                if valid := db_process.is_site_still_valid(model=Sites):
+                if db_process.is_site_still_valid(model=Sites):
                     print(
                         f"{self.target_user}'s file already exists. and valid. reading from cache")
-                    extracted_content: dict = db_process.read(column='extracted_data')
+                    extracted_content: list[dict] = db_process.read(column='extracted_data')
                 else:
-                    extracted_content = _fetch(u_w='update')
+                    extracted_content: dict = _fetch(u_w='update')
 
             # extract content instance
             return extracted_content
 
     def post_content(self) -> None:
-        def _post():
+        def _post() -> None:
+            """
+            image post
+
+            Return: None
+            """
+            with session() as sess:
+                # create instance
+                db_process = DBProcess(sess=sess, username=self.target_user)
+                media_process = MediaProcess(username=self.target_user)
+
+                # read medias
+                medias = db_process.read(column="extracted_data")
+                print("medias: ", medias)
+
+
+
+
+
             # read flow file
-            flow: list[dict] = DBProcess(filename='post', root="flow").read()
+            #flow: list[dict] = DBProcess(filename='post', root="flow").read()
 
-            # post content
-            assert Post(post_information=flow[0]).post(
-            ) == True, "post did not return True"
+            ## post content
+            #assert Post(post_information=flow[0]).post(
+            #) == True, "post did not return True"
 
-            # extract sent item and delete
-            os.remove(flow.pop(0))
+            ## extract sent item and delete
+            #os.remove(flow.pop(0))
 
-            # re-write item
-            DBProcess(filename='post', root="flow", content=flow).write()
+            ## re-write item
+            #DBProcess(filename='post', root="flow", content=flow).write()
 
         def _story():
             flow: dict = DBProcess(filename='post', root="flow").read()
