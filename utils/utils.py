@@ -2,7 +2,7 @@ import datetime
 import json
 from typing import Optional
 
-from commons.models.schemas import Sites
+from commons.models.schemas import Sites, Queue
 from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
@@ -35,7 +35,9 @@ class DBProcess:
 
     def write(self, content, extracted_content) -> None:
         """write json files"""
-        _d = [
+
+        ## ** write sites db
+        sites = [
             {
                 'username': self.username,
                 'data': json.dumps(content, indent=2),
@@ -43,9 +45,19 @@ class DBProcess:
                 'last_update': datetime.datetime.today()
             }
         ]
+        # print(sites[0])
+        self.session.execute(insert(Sites), sites)
+        # self.session.commit()
 
-        print("filename in write: ")
-        self.session.execute(insert(Sites), _d)
+        ## ** write queue db
+        # insert(user_table).values(name="spongebob", fullname="Spongebob Squarepants")
+        mapped = [
+            {
+                "medias": json.dumps(m, indent=2)
+            } for m in extracted_content['medias']
+        ]
+
+        self.session.bulk_insert_mappings(Queue, mapped)
         self.session.commit()
 
     def update(self, content, extracted_content) -> None:
@@ -62,7 +74,6 @@ class DBProcess:
         )
         self.session.commit()
 
-
     def is_site_exists(self) -> bool:
         """control if file exists"""
         return bool(self.session.query(Sites).where(
@@ -72,23 +83,20 @@ class DBProcess:
     def is_site_still_valid(self,
                             model: Sites,
                             ) -> bool:
+        """
+        validation control
+        if file last_update date is older than 10 days
+        re-fetch data
+
+        """
+        # NOTE: re-fetch olayını 10 gün de bir değil aynı zamanda medialar bittiğinde de tekrarla
         d = self.session.query(model.last_update).where(
             model.username == self.username
         ).first()
         d = dict(d)
-
-        # datetime.datetime.strptime(d, "%Y-%m-%d")
-
         return True \
-            if (datetime.datetime.today() - d['last_update']).days <= 2 \
+            if (datetime.datetime.today() - d['last_update']).days <= 10 \
             else False
-
-
-# DB OLMADIGI ICIN SQL CALISMIYOR DB'YI ILK ETAP DA OLUSTURMAK LAZIM
-#####
-
-# util
-# GET_HEADERS = FileProcess("get", root="configs/settings/get").read()
 
 
 def complete_dict(raw_headers: dict = None,
