@@ -3,7 +3,7 @@ from typing import Optional
 
 from commons import session
 from utils import MediaProcess, Post, DBProcess
-from commons.models.schemas import Sites
+from commons.models.schemas import Sites, Queue
 
 
 class Bot:
@@ -41,8 +41,6 @@ class Bot:
             # if file is not exists create
             is_exists = db_process.is_site_exists()
             if not is_exists:
-                #content: dict = media_process.fetch()
-                #extracted_content: dict = media_process.parse(content=content)
                 extracted_content = _fetch(u_w='write')
 
             # if file exists
@@ -51,7 +49,11 @@ class Bot:
                 if db_process.is_site_still_valid(model=Sites):
                     print(
                         f"{self.target_user}'s file already exists. and valid. reading from cache")
-                    extracted_content: list[dict] = db_process.read(column='extracted_data')
+                    extracted_content: list[dict] = db_process.read(
+                            table=Sites,
+                            column='extracted_data',
+                            fetch_by=('username', self.target_user)
+                            )
                 else:
                     extracted_content: dict = _fetch(u_w='update')
 
@@ -66,29 +68,27 @@ class Bot:
             Return: None
             """
             with session() as sess:
-                # create instance
+                # create instance
                 db_process = DBProcess(sess=sess, username=self.target_user)
                 media_process = MediaProcess(username=self.target_user)
 
-                # read medias
-                medias = db_process.read(column="extracted_data")
+                # read medias
+                #medias = db_process.read(table="Queue", by='medias', column="medias")
+                medias: list[dict] = db_process.read(
+                            table=Queue,
+                            column='medias',
+                            fetch_by='medias'
+                            )
                 print("medias: ", medias)
 
+            # post content
+            # assert Post(post_information=flow[0]).post(
+            # ) == True, "post did not return True"
 
+            # extract sent item and delete
+            # os.remove(flow.pop(0))
 
-
-
-            # read flow file
-            #flow: list[dict] = DBProcess(filename='post', root="flow").read()
-
-            ## post content
-            #assert Post(post_information=flow[0]).post(
-            #) == True, "post did not return True"
-
-            ## extract sent item and delete
-            #os.remove(flow.pop(0))
-
-            ## re-write item
+            # re-write item
             #DBProcess(filename='post', root="flow", content=flow).write()
 
         def _story():
@@ -101,11 +101,12 @@ class Bot:
             # extract sent item and delete
             os.remove(flow.pop(0))
 
-        try:
-            if self.post_type == "post":
-                _post()
-            elif self.post_type == "story":
-                _story()
+        # try:
+        #    if self.post_type == "post":
+        #        _post()
+        #    elif self.post_type == "story":
+        #        _story()
 
-        except Exception as e:
-            print("Error while post_content: ", e)
+        # except Exception as e:
+        #    print("Error while post_content: ", e)
+        _post()
