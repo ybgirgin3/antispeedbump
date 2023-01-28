@@ -1,6 +1,6 @@
 import datetime
 import json
-from typing import Optional
+from typing import Optional, Union
 
 from commons.models.schemas import Sites, Queue
 from sqlalchemy import insert
@@ -20,23 +20,36 @@ class DBProcess:
         count = self.session.execute(q)
         return count
 
-    def read(self, column: str = 'extracted_data') -> list[dict]:
-        """read json"""
-        s = None
-        if column == "data":
-            s = Sites.data
-        if column == 'extracted_data':
-            s = Sites.extracted_data
+    def read(self,
+             table: Union[Sites, Queue],
+             column: str='extracted_data',
+             fetch_by: Union[tuple, str]="",
+             ) -> Union[list[dict], dict]:
+        """
+        Read data from table(s) 
+        """
 
-        d = self.session.query(s).where(
-            Sites.username == self.username
-        ).first()
-        return json.loads(d[0])
+        main_q = getattr(table, column)
+
+        if isinstance(fetch_by, tuple):
+            sub_q  = getattr(table, fetch_by[0])
+            resp = self.session.query(main_q).where(
+                    sub_q == fetch_by[1]
+                    ).first()
+            ret = json.loads(resp[column])
+
+        if isinstance(fetch_by, str):
+            resp = self.session.query(main_q).first()
+            ret = json.loads(resp[column])
+
+        return ret
+
+
 
     def write(self, content, extracted_content) -> None:
         """write json files"""
 
-        ## ** write sites db
+        # ** write sites db
         sites = [
             {
                 'username': self.username,
@@ -45,12 +58,9 @@ class DBProcess:
                 'last_update': datetime.datetime.today()
             }
         ]
-        # print(sites[0])
         self.session.execute(insert(Sites), sites)
-        # self.session.commit()
 
-        ## ** write queue db
-        # insert(user_table).values(name="spongebob", fullname="Spongebob Squarepants")
+        # ** write queue db
         mapped = [
             {
                 "medias": json.dumps(m, indent=2)
@@ -62,15 +72,14 @@ class DBProcess:
 
     def update(self, content, extracted_content) -> None:
         """update json files"""
-        _d = {
-            # 'username': self.username,
+        updated_data = {
             'data': json.dumps(content, indent=2),
             'extracted_data': json.dumps(extracted_content, indent=2),
             'last_update': datetime.datetime.today()
         }
 
         self.session.query(Sites).update(
-            _d
+            updated_data
         )
         self.session.commit()
 
