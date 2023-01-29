@@ -15,9 +15,10 @@ class Sites(Base):
     extracted_data = Column(String)
     last_update = Column(DateTime, default=datetime.datetime.utcnow())
 
+
 class Queue(Base):
-    __tablename__ = 'queue'
+    __tablename__ = "queue"
 
     id = Column(Integer, primary_key=True)
+    description = Column(String)
     medias = Column(String)
-
