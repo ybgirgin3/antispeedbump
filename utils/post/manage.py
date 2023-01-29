@@ -1,5 +1,5 @@
 # built-in
-from typing import Optional
+from typing import Optional, Union
 from pathlib import Path
 from requests import Response
 import platform
@@ -17,29 +17,30 @@ import helium
 
 
 class Post:
-    def __init__(self,
-                 url: str = "www.instagram.com",
-                 username: str = "koddeneme260",
-                 passwd: str = "uZZc4-YBY:5sVW?",
-                 # username: str = "bekocankod"
-                 # passwd: str = ")d3::b%&.X,u3^J"
-                 post_information: dict = None,
-
-                 ) -> None:
+    def __init__(
+        self,
+        url: str = "www.instagram.com",
+        # username: str = "koddeneme260",
+        # passwd: str = "uZZc4-YBY:5sVW?",
+        username: str = "bekocankod",
+        passwd: str = ")d3::b%&.X,u3^J",
+        data_to_post: dict = {},
+    ) -> None:
         self.username = username
         self.passwd = passwd
-        self.inf = post_information
+        self.data_to_post = data_to_post
         self.url = url
+        self.downloadable = self.download()
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
 
-        driver_path = os.path.join(Path().parent.absolute(
-        ), f'configs/driver/{platform.system().lower()}/chromedriver')
+        driver_path = os.path.join(
+            Path().parent.absolute(),
+            f"configs/driver/{platform.system().lower()}/chromedriver",
+        )
 
-        self._driver = webdriver.Chrome(
-            driver_path, options=chrome_options)
-
+        self._driver = webdriver.Chrome(driver_path, options=chrome_options)
         self.driver = set_driver(self._driver)
         self.get = get_driver()
 
@@ -51,35 +52,36 @@ class Post:
 
             # *** share
             share_button = self._find_attr(
-                "//*[name()='svg' and @aria-label='New post']", with_s=True)[0]
+                "//*[name()='svg' and @aria-label='New post']", with_s=True
+            )[0]
             # find button
             wait_until(share_button.exists)
             self._button_event(attr=share_button)
 
             # attach file
-            drag_file(self.inf['path'],
-                      to="Drag photos and videos here")
+            drag_file(self.downloadable["binary"], to="Drag photos and videos here")
 
             # is_video?
-            if self.inf['is_video']:
+            if self.downloadable["file_type"] == "video":
                 ok = Button("OK")
                 wait_until(ok.exists)
                 self._button_event(attr=ok)
 
-            # *** Aspect Ration 
-            # crop button
+            # *** Aspect Ration
+            # crop button
             crop_button = self._find_attr(
-                "//*[name()='svg' and @aria-label='Select crop']", with_s=True)[0]
+                "//*[name()='svg' and @aria-label='Select crop']", with_s=True
+            )[0]
             wait_until(crop_button.exists)
             self._button_event(attr=crop_button)
 
-            # original button
+            # original button
             org = Button("Original")
             wait_until(org.exists)
             self._button_event(attr=org)
 
             # next session (two times in a row)
-            # first
+            # first
             ns = Button("Next")
             wait_until(ns.exists)
             self._button_event(attr=ns)
@@ -96,11 +98,14 @@ class Post:
             time.sleep(3)
             desc_area = self._find_attr(
                 attr="//*[name()='textarea' and @aria-label='Write a caption...']",
-                with_s=True)[0]
+                with_s=True,
+            )[0]
             wait_until(desc_area.exists)
-            self._fill(attr=desc_area,
-                       value=self.inf['description'] if 'description' in
-                       self.inf else "")
+            # NOTE:EMOJI TO UNICODE VALIDATION YAZ
+            self._fill(
+                attr=desc_area,
+                value=self.downloadable["description"],
+            )
 
             # Share post
             sb = Button("Share")
@@ -125,11 +130,12 @@ class Post:
 
         # new post button
         post_button = self._find_attr(
-            "//*[name()='svg' and @aria-label='Home']", with_s=True)[0]
+            "//*[name()='svg' and @aria-label='Home']", with_s=True
+        )[0]
         wait_until(post_button.exists)
         self._button_event(attr=post_button)
 
-        # story button
+        # story button
         sb = "//*[name()='svg' and @aria-label='Story']"
         story_button = self._find_attr(sb, with_s=True)[0]
         wait_until(story_button.exists)
@@ -142,7 +148,7 @@ class Post:
         # self._button_event(attr=)
 
         inp_field = self._driver.find_element(By.XPATH, inp)
-        inp_field.send_keys(self.inf['path'])
+        inp_field.send_keys(self.inf["path"])
 
         # attach_file(file_path=self.inf['path'])
 
@@ -150,12 +156,12 @@ class Post:
 
     def login(self):
         go_to(self.url)  # go to url
-        # ***  LOGIN 
+        # ***  LOGIN
         wait_until(Button("Log in").exists)  # wait for page fully loaded
 
         # find buttons
-        username_button = self._find_attr('@username', with_s=True)[0]
-        password_button = self._find_attr('@password', with_s=True)[0]
+        username_button = self._find_attr("@username", with_s=True)[0]
+        password_button = self._find_attr("@password", with_s=True)[0]
         login_button = self._find_attr(Button("Log in"))[0]
 
         #  interact
@@ -177,30 +183,29 @@ class Post:
         not_now_button = self._find_attr(nn)[0]
         self._button_event(attr=not_now_button)
 
-
     def _fill(self, attr: str, value: str):
         """
-            fill input fields with desired value
+        fill input fields with desired value
 
-            @param: value: str
-                         : value to fill
+        @param: value: str
+                     : value to fill
 
-            @param: S    : str
-                         : HTML attribute of field
+        @param: S    : str
+                     : HTML attribute of field
 
         """
         return write(value, into=attr)
 
-    def _button_event(self, command: str = "click", attr: str = ""):
+    def _button_event(self, command: str = "click", attr: Union[str, Button] = ""):
         """
-            @param: command : str
-                            : click, press
+        @param: command : str
+                        : click, press
 
-            @param: value   : str
-                            : Button Attr
+        @param: value   : str
+                        : Button Attr
 
-            @param: S       : str [Optional]
-                            : HTML attribute of button
+        @param: S       : str [Optional]
+                        : HTML attribute of button
 
 
         """
@@ -217,6 +222,46 @@ class Post:
         print("ret: ", ret)
         return ret
 
-    # util
-    def _post_resp(self):
-        resp: Response
+    def download(self) -> dict:
+        import uuid
+
+        media = self.data_to_post["media"]
+        is_video = media["is_video"]
+        media_url = media["download_url"]
+        if is_video:
+            filename = f"{uuid.uuid4()}.mp4"
+        else:
+            filename = f"{uuid.uuid4()}.jpeg"
+
+        return {
+            "file_type": "video" if is_video else "image",
+            "description": self.data_to_post["description"] + "\u2764",
+            "binary": _download(url=media_url, filename=filename),
+        }
+
+
+def _download(url: str, filename: str) -> str:
+    import requests
+    import tempfile
+    import uuid
+    import os
+
+    fp = os.path.join(tempfile.gettempdir(), filename)
+
+    resp = requests.get(url)  # making requests to server
+
+    with open(fp, "wb") as f:  # opening a file handler to create new file
+        f.write(resp.content)
+
+    return fp
+
+
+def delete(fp: str) -> None:
+    import os
+
+    """delete file from the os (not limited to project)
+
+    Args:
+        fp (str): _description_
+    """
+    os.remove(fp)

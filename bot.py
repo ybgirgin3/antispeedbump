@@ -75,7 +75,7 @@ class Bot:
                 media_process = MediaProcess(username=self.target_user)
 
                 # read medias
-                media: Union[list[dict], dict] = db_process.read(
+                media: list[dict] = db_process.read(
                     model=Queue, column="medias", delete_perm="y"
                 )
                 print("media: ", media)
@@ -83,9 +83,10 @@ class Bot:
                 # db_process.delete(model=Queue,
                 #                  data_id=media.id)
 
-            # post content
-            # assert Post(post_information=flow[0]).post(
-            # ) == True, "post did not return True"
+                # post content
+                assert (
+                    Post(data_to_post=media).post() == True
+                ), "post did not return True"
 
             # extract sent item and delete
             # os.remove(flow.pop(0))

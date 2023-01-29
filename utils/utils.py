@@ -29,7 +29,7 @@ class DBProcess:
         column: str = "extracted_data",
         fetch_by: Optional[Union[tuple, str]] = "",
         delete_perm: str = "n",
-    ) -> Union[list[dict], dict]:
+    ) -> list[dict]:
         """
         Read data from table(s)
         """
@@ -39,16 +39,18 @@ class DBProcess:
 
         if isinstance(fetch_by, tuple):
             sub_q = getattr(model, fetch_by[0])
-            resp = self.session.query(column_attr).where(
-                sub_q == fetch_by[1]).first()
+            resp = self.session.query(column_attr).where(sub_q == fetch_by[1]).first()
             ret = json.loads(resp[column])
 
         if isinstance(fetch_by, str):
+            ret = {}
             resp = self.session.query(model).order_by(func.random()).first()
+            ret["description"] = resp.description
 
             # ret = json.loads(resp[column])
             # NOTE: fix dynamic column name
-            ret = json.loads(resp.medias)
+            media = json.loads(resp.medias)
+            ret["media"] = media
 
             if delete_perm.lower() in ("y", "yes"):
                 self.delete(model, resp.id)
@@ -57,8 +59,6 @@ class DBProcess:
 
     def write(self, content, extracted_content) -> None:
         """write json files"""
-
-        descs = ["💥💥💥", "🤯🤯", "😳", "💀", "😫😫😫", "✨✨✨", "🌟🌟🌟"]
 
         # ** write sites db
         sites = [
@@ -75,8 +75,9 @@ class DBProcess:
         mapped = [
             {
                 "medias": json.dumps(m, indent=2),
-                "description": random.choice(descs)
-            } for m in extracted_content["medias"]
+                "description": emoji_validator(),
+            }
+            for m in extracted_content["medias"]
         ]
 
         self.session.bulk_insert_mappings(Queue, mapped)
@@ -101,8 +102,7 @@ class DBProcess:
     def is_site_exists(self) -> bool:
         """control if file exists"""
         return bool(
-            self.session.query(Sites).where(
-                Sites.username == self.username).first()
+            self.session.query(Sites).where(Sites.username == self.username).first()
         )
 
     def is_site_still_valid(
@@ -123,8 +123,7 @@ class DBProcess:
         )
         d = dict(d)
         return (
-            True if (datetime.datetime.today() -
-                     d["last_update"]).days <= 10 else False
+            True if (datetime.datetime.today() - d["last_update"]).days <= 3 else False
         )
 
 
@@ -151,3 +150,19 @@ def get_image_size(imp: str) -> tuple:
 
     im = Image.open(imp)
     return im, im.size
+
+
+def emoji_validator() -> str:
+    # conversion = {
+    #    "🤤": "&#129296;",
+    #    #"🤤": "U0001F924",
+    #    #"🤯": u'\uF92F',
+    #    #"💀": "U+1F480",
+    #    #"😳": "U+1F633",
+    #    #"😩": "U+1F629",
+    #    #"💥": "U+1F4A5",
+    # }
+    # + u'\u2764'
+
+    # return conversion[random.choice(list(conversion.keys()))]
+    return "Follow for more content ✨"
