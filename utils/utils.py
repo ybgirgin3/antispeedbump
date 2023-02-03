@@ -1,4 +1,5 @@
 import datetime
+import requests
 import json
 from typing import Optional, Union
 import random
@@ -28,32 +29,32 @@ class DBProcess:
         model: Union[Sites, Queue],
         column: str = "extracted_data",
         fetch_by: Optional[Union[tuple, str]] = "",
-        delete_perm: str = "n",
-    ) -> list[dict]:
+        # delete_perm: str = "n",
+    ) -> dict:
         """
         Read data from table(s)
         """
 
         column_attr = getattr(model, column)
-        print("column attr: ", column_attr)
 
         if isinstance(fetch_by, tuple):
             sub_q = getattr(model, fetch_by[0])
-            resp = self.session.query(column_attr).where(sub_q == fetch_by[1]).first()
+            resp = self.session.query(column_attr).where(
+                sub_q == fetch_by[1]).first()
             ret = json.loads(resp[column])
 
         if isinstance(fetch_by, str):
             ret = {}
             resp = self.session.query(model).order_by(func.random()).first()
+            ret['id'] = resp.id
             ret["description"] = resp.description
 
+            ret['binary_data'] = resp.binary_data
+
             # ret = json.loads(resp[column])
-            # NOTE: fix dynamic column name
+            # TODO: fix dynamic column name
             media = json.loads(resp.medias)
             ret["media"] = media
-
-            if delete_perm.lower() in ("y", "yes"):
-                self.delete(model, resp.id)
 
         return ret
 
@@ -61,21 +62,28 @@ class DBProcess:
         """write json files"""
 
         # ** write sites db
-        sites = [
-            {
-                "username": self.username,
-                "data": json.dumps(content, indent=2),
-                "extracted_data": json.dumps(extracted_content, indent=2),
-                "last_update": datetime.datetime.today(),
-            }
-        ]
-        self.session.execute(insert(Sites), sites)
+        if extracted_content['is_private'] and \
+                'medias' not in extracted_content:
+            return
+
+        last_update = datetime.datetime.today()
+
+        sites = Sites(
+            username=self.username,
+            data=json.dumps(content, indent=2),
+            extracted_data=json.dumps(extracted_content, indent=2),
+            last_update=last_update,
+        )
+        self.session.add(sites)
+        self.session.commit()
 
         # ** write queue db
         mapped = [
             {
                 "medias": json.dumps(m, indent=2),
                 "description": emoji_validator(),
+                "last_update": last_update,
+                "binary_data": create_bin(m['download_url']),
             }
             for m in extracted_content["medias"]
         ]
@@ -85,24 +93,25 @@ class DBProcess:
 
     def update(self, content, extracted_content) -> None:
         """update json files"""
-        updated_data = {
-            "data": json.dumps(content, indent=2),
-            "extracted_data": json.dumps(extracted_content, indent=2),
-            "last_update": datetime.datetime.today(),
-        }
-
-        self.session.query(Sites).update(updated_data)
+        updated_sites = Sites(
+            data=json.dumps(content, indent=2),
+            extracted_data=json.dumps(extracted_content, indent=2),
+            last_update=datetime.datetime.today()
+        )
+        self.session.add(updated_sites)
         self.session.commit()
 
     def delete(self, model: Union[Sites, Queue], data_id: int = 1) -> None:
         _del = self.session.query(model).where(model.id == data_id).first()
+        print("_Del: ", _del)
         self.session.delete(_del)
         self.session.commit()
 
     def is_site_exists(self) -> bool:
         """control if file exists"""
         return bool(
-            self.session.query(Sites).where(Sites.username == self.username).first()
+            self.session.query(Sites).where(
+                Sites.username == self.username).first()
         )
 
     def is_site_still_valid(
@@ -123,8 +132,17 @@ class DBProcess:
         )
         d = dict(d)
         return (
-            True if (datetime.datetime.today() - d["last_update"]).days <= 3 else False
+            True if (
+                datetime.datetime.today() -
+                d["last_update"]
+            ).days <= 3 else False
         )
+
+
+def create_bin(url: str):
+    # TODO: videoları blob'dan okumuyor hata veriyor
+    print("current url in create_bin: ", url)
+    return requests.get(url).content
 
 
 def complete_dict(raw_headers: dict = None, **kwargs):
@@ -165,4 +183,4 @@ def emoji_validator() -> str:
     # + u'\u2764'
 
     # return conversion[random.choice(list(conversion.keys()))]
-    return "Follow for more content ✨"
+    return "Follow for more content ✨❤️"

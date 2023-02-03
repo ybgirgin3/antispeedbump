@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from .models import schemas
 
-
-from sqlalchemy.engine import Engine
+import os
 
 # to return
 from sqlalchemy.orm import Session
+from sqlalchemy.engine import Engine
+
 
 
 class UnknownDBError(Exception):
@@ -14,7 +15,7 @@ class UnknownDBError(Exception):
 
 SQL_ALCHEMY_ENGINES = {
     "antispeedbump": create_engine(
-        "sqlite:////Users/berkay/Documents/workspace/Data/antispeedbump/antispeedbump.db",
+        f"sqlite:///{os.getcwd()}/antispeedbump.db",
         echo=False,
     )
 }
@@ -24,7 +25,6 @@ def _create_table(model: str, db_engine: Engine):
     # example usage: _create_table("Sites", SQL_ALCHEMY_ENGINES['sites'])
 
     model = getattr(schemas, model)
-    print("model", model)
     model.__table__.create(db_engine)
 
 

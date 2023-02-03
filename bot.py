@@ -42,6 +42,8 @@ class Bot:
             # if file is not exists create
             is_exists = db_process.is_site_exists()
             if not is_exists:
+                if self.will_create_content:
+                    print(f"{self.target_user}'s data couldn't found. creating..")
                 extracted_content = _fetch(u_w="write")
 
             # if file exists
@@ -57,6 +59,7 @@ class Bot:
                         fetch_by=("username", self.target_user),
                     )
                 else:
+                    print(f"{self.target_user}'s file is older. Re-fetching..")
                     extracted_content: dict = _fetch(u_w="update")
 
             # extract content instance
@@ -72,27 +75,18 @@ class Bot:
             with session() as sess:
                 # create instance
                 db_process = DBProcess(sess=sess, username=self.target_user)
-                media_process = MediaProcess(username=self.target_user)
 
                 # read medias
-                media: list[dict] = db_process.read(
-                    model=Queue, column="medias", delete_perm="y"
-                )
-                print("media: ", media)
-
-                # db_process.delete(model=Queue,
-                #                  data_id=media.id)
+                media: dict = db_process.read(model=Queue, column="medias")
+                print("current media to upload: ", media['id'], media['description'])
 
                 # post content
-                assert (
-                    Post(data_to_post=media).post() == True
-                ), "post did not return True"
+                if Post(data_to_post=media).post() == True:
+                    db_process.delete(Queue, media['id'])
 
-            # extract sent item and delete
-            # os.remove(flow.pop(0))
-
-            # re-write item
-            # DBProcess(filename='post', root="flow", content=flow).write()
+                # assert (
+                #    Post(data_to_post=media).post() == True
+                # ), "post did not return True"
 
         def _story():
             flow: dict = DBProcess(filename="post", root="flow").read()

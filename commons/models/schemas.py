@@ -1,6 +1,7 @@
 import datetime
 
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String, ForeignKey, LargeBinary
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -22,3 +23,5 @@ class Queue(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String)
     medias = Column(String)
+    binary_data = Column(LargeBinary)
+    last_update = Column(DateTime, default=datetime.datetime.utcnow())

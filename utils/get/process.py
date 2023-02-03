@@ -37,7 +37,8 @@ class MediaProcess:
         )
 
     def fetch(self) -> dict:
-        resp: requests.Response = requests.get(url=self.url, headers=self.headers)
+        resp: requests.Response = requests.get(
+            url=self.url, headers=self.headers)
         js = resp.json()
         return js
 

@@ -27,7 +27,8 @@ class Expressions:
 
         if self.data["is_private"]:
             # if account is private return immediately
-            print("Account is private, Data will be limited...")
+            print(
+                "Account is private, Data will be limited... And no media will be included")
             return ret
 
         _medias = []
