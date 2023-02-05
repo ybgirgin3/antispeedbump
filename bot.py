@@ -77,7 +77,8 @@ class Bot:
 
                 # read medias
                 media: dict = db_process.read(model=Queue, column="medias")
-                print("current media to upload: ", media["id"], media["description"])
+                print("current media to upload: ",
+                      media["id"], media["description"])
 
                 # post content
                 if Post(data_to_post=media).post() == True:
