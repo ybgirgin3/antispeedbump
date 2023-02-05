@@ -172,9 +172,11 @@ def emoji_validator(original_description: str, username: str) -> str:
     # + u'\u2764'
 
     # return conversion[random.choice(list(conversion.keys()))]
-    return f"""Follow for more content ✨❤️ 
+    return f"""{original_description}
+    .......
+    Follow for more content ✨❤️ 
     credit: @{username}
-    Original Description: {original_description}
+    Original Description: 
 
     #car
     #sportcar
