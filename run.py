@@ -17,7 +17,7 @@ def cli():
     "--collect", is_flag=True, default=False, help="Download last post or not"
 )
 def find(username: str, collect: bool):
-    if not Path("antispeedbump.db").exists():
+    if not Path("database.db").exists():
         from antispeedbump.commons import SQL_ALCHEMY_ENGINES, _create_table
 
         _create_table("Sites", SQL_ALCHEMY_ENGINES["antispeedbump"])

@@ -195,8 +195,8 @@ def remove_emojis(string: str) -> str:
     import random
 
     replacing_emojis = {
-            "🎥": ["by", "camera", "cameraman"]
-            }
+        "🎥": ["by", "camera", "cameraman"]
+    }
 
     for char in string:
         if emoji.is_emoji(char):
@@ -217,12 +217,7 @@ def remove_self_promotion(string: str, username) -> str:
     """
     string = string.split()
     for each in string:
-        if each.startswith('@'):
-            if each == f"@{username}":
-                string.remove(each)
+        if each.startswith('@') and each == f"@{username}":
+            string.remove(each)
 
     return " ".join(string)
-
-
-
-

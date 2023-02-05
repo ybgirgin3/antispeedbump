@@ -5,14 +5,10 @@ import requests
 
 from .expressions import Expressions
 from ..utils import complete_dict
+from antispeedbump.configs.settings import setting
 
 
-def _(fn):
-    with open(f"antispeedbump/configs/settings/get/{fn}") as f:
-        return json.load(f)
-
-
-GET_HEADERS = _("get.json")
+GET_HEADERS = setting('get')
 
 
 class MediaProcess:
