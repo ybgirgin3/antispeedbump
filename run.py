@@ -3,7 +3,7 @@ from pprint import pprint
 
 import click
 
-from bot import Bot
+from antispeedbump.bot import Bot
 
 
 @click.group()
@@ -18,7 +18,7 @@ def cli():
 )
 def find(username: str, collect: bool):
     if not Path("antispeedbump.db").exists():
-        from commons import SQL_ALCHEMY_ENGINES, _create_table
+        from antispeedbump.commons import SQL_ALCHEMY_ENGINES, _create_table
 
         _create_table("Sites", SQL_ALCHEMY_ENGINES["antispeedbump"])
         _create_table("Queue", SQL_ALCHEMY_ENGINES["antispeedbump"])

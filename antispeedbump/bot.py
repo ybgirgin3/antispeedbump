@@ -1,8 +1,8 @@
 from typing import Optional
 
-from commons import session
-from commons.models.schemas import Sites, Queue
-from utils import MediaProcess, Post, DBProcess
+from antispeedbump.commons import session
+from antispeedbump.commons.models.schemas import Sites, Queue
+from antispeedbump.utils import MediaProcess, Post, DBProcess
 
 
 class Bot:

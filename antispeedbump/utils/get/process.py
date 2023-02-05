@@ -8,7 +8,7 @@ from ..utils import complete_dict
 
 
 def _(fn):
-    with open(f"configs/settings/get/{fn}") as f:
+    with open(f"antispeedbump/configs/settings/get/{fn}") as f:
         return json.load(f)
 
 
@@ -37,7 +37,8 @@ class MediaProcess:
         )
 
     def fetch(self) -> dict:
-        resp: requests.Response = requests.get(url=self.url, headers=self.headers)
+        resp: requests.Response = requests.get(
+            url=self.url, headers=self.headers)
         js = resp.json()
         return js
 

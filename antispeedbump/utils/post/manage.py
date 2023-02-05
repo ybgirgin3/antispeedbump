@@ -42,7 +42,7 @@ class Post:
         driver_path = os.path.join(
             # Path().parent.absolute(),
             os.getcwd(),
-            f"configs/driver/{platform.system().lower()}/geckodriver"
+            f"antispeedbump/configs/driver/{platform.system().lower()}/geckodriver"
         )
 
         #self._driver = webdriver.Chrome(driver_path, options=chrome_options)

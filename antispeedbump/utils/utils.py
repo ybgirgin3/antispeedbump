@@ -3,7 +3,7 @@ import json
 from typing import Optional, Union
 
 import requests
-from commons.models.schemas import Sites, Queue
+from antispeedbump.commons.models.schemas import Sites, Queue
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import func
 
