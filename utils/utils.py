@@ -176,7 +176,6 @@ def emoji_validator(original_description: str, username: str) -> str:
     .......
     Follow for more content ✨❤️ 
     credit: @{username}
-    Original Description: 
 
     #car
     #sportcar
