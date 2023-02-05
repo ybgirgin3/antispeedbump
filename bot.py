@@ -1,17 +1,16 @@
-import os
-from typing import Optional, Union
+from typing import Optional
 
 from commons import session
-from utils import MediaProcess, Post, DBProcess
 from commons.models.schemas import Sites, Queue
+from utils import MediaProcess, Post, DBProcess
 
 
 class Bot:
     def __init__(
-        self,
-        target_user: Optional[str] = "",
-        will_create_content: Optional[bool] = False,
-        post_type: Optional[str] = "post",
+            self,
+            target_user: Optional[str] = "",
+            will_create_content: Optional[bool] = False,
+            post_type: Optional[str] = "post",
     ):
         self.target_user = target_user
         self.will_create_content = will_create_content
@@ -53,7 +52,7 @@ class Bot:
                     print(
                         f"{self.target_user}'s file already exists. and valid. reading from cache"
                     )
-                    extracted_content: list[dict] = db_process.read(
+                    extracted_content: dict = db_process.read(
                         model=Sites,
                         column="extracted_data",
                         fetch_by=("username", self.target_user),
@@ -78,26 +77,23 @@ class Bot:
 
                 # read medias
                 media: dict = db_process.read(model=Queue, column="medias")
-                print("current media to upload: ", media['id'], media['description'])
+                print("current media to upload: ", media["id"], media["description"])
 
                 # post content
                 if Post(data_to_post=media).post() == True:
-                    db_process.delete(Queue, media['id'])
-
-                # assert (
-                #    Post(data_to_post=media).post() == True
-                # ), "post did not return True"
+                    db_process.delete(Queue, media["id"])
 
         def _story():
-            flow: dict = DBProcess(filename="post", root="flow").read()
-            print("flow file content in story: ", flow)
+            pass
+            # flow: dict = DBProcess(filename="post", root="flow").read()
+            # print("flow file content in story: ", flow)
 
-            assert Post(
-                post_information=flow[0], device="mobile"
-            ).story(), "story did not return True"
+            # assert Post(
+            #    post_information=flow[0], device="mobile"
+            # ).story(), "story did not return True"
 
             # extract sent item and delete
-            os.remove(flow.pop(0))
+            # os.remove(flow.pop(0))
 
         # try:
         #    if self.post_type == "post":

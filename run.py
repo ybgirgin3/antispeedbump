@@ -28,10 +28,8 @@ def find(username: str, collect: bool):
         will_create_content=collect,
     ).get_data_from_another()
     # print(ret['full_name'], ret['profile_picture'])
-    pret = {
-            "full_name": ret['full_name'],
-            "profile_picture": ret['profile_picture']
-            }
+    pret = {"full_name": ret["full_name"],
+            "profile_picture": ret["profile_picture"]}
     pprint(pret)
 
 

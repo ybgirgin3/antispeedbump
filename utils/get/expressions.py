@@ -1,7 +1,3 @@
-from typing import Optional
-import random
-
-
 class Expressions:
     """
     edge_sidecar_to_children -> sliding images
@@ -28,7 +24,8 @@ class Expressions:
         if self.data["is_private"]:
             # if account is private return immediately
             print(
-                "Account is private, Data will be limited... And no media will be included")
+                "Account is private, Data will be limited... And no media will be included"
+            )
             return ret
 
         _medias = []
@@ -38,6 +35,7 @@ class Expressions:
             node = media["node"]
             is_video = node["is_video"]
             download_url = node["video_url"] if is_video else node["display_url"]
+            #orginal_desc = node['edge_media_to_caption']['edges']['text']
 
             _ret["is_video"] = is_video
             _ret["download_url"] = download_url

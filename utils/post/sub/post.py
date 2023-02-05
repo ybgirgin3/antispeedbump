@@ -1,6 +1,8 @@
-from .login import _login
-from helium import Button, wait_until, drag_file, Text
 import time
+
+from helium import Button, wait_until, drag_file, Text
+
+from .login import _login
 
 
 def _post(self) -> bool:
@@ -11,15 +13,16 @@ def _post(self) -> bool:
 
         # *** share
         share_button = self._find_attr(
-            "//*[name()='svg' and @aria-label='New post']", with_s=True, prefix="share button"
+            "//*[name()='svg' and @aria-label='New post']",
+            with_s=True,
+            prefix="share button",
         )[0]
         # find button
         wait_until(share_button.exists)
         self._button_event(attr=share_button)
 
         # attach file
-        drag_file(self.downloadable["binary"],
-                  to="Drag photos and videos here")
+        drag_file(self.downloadable["binary"], to="Drag photos and videos here")
 
         # is_video?
         if self.downloadable["file_type"] == "video":
@@ -30,7 +33,9 @@ def _post(self) -> bool:
         # *** Aspect Ration
         # crop button
         crop_button = self._find_attr(
-            "//*[name()='svg' and @aria-label='Select crop']", with_s=True, prefix="crop button"
+            "//*[name()='svg' and @aria-label='Select crop']",
+            with_s=True,
+            prefix="crop button",
         )[0]
         wait_until(crop_button.exists)
         self._button_event(attr=crop_button)
@@ -59,13 +64,13 @@ def _post(self) -> bool:
         desc_area = self._find_attr(
             attr="//*[name()='textarea' and @aria-label='Write a caption...']",
             with_s=True,
-            prefix="desc area"
+            prefix="desc area",
         )[0]
         wait_until(desc_area.exists)
 
         self._fill(
             attr=desc_area,
-            value=self.downloadable["description"],
+            value=f"({self.downloadable['id']}) {self.downloadable['description']}"
         )
 
         # Share post
@@ -74,13 +79,18 @@ def _post(self) -> bool:
         self._button_event(attr=sb)
 
         # Wait for the "Your post has beed shared" message
-        time.sleep(5)
+        #time.sleep(5)
 
-        #cs = Text("Your post could not be shared. Please try again.")
+        # cs = Text("Your post could not be shared. Please try again.")
         ps = Text("Your post has been shared.")
         time.sleep(15)
+        
+        # TODO: Post yollarken eğer try again çıkarsa ve o butona basarsak,
+        # post yollanma işlemi aynı ayarlar ile tekrardan devam ediyor ve genellikle
+        # yollama işlemi başarılı oluyor.
+        # eğer try again gelirse o butona bastır...
 
-        ret: bool = False 
+        ret: bool = False
 
         if ps.exists:
             print("Your post has been shared.")
@@ -90,10 +100,8 @@ def _post(self) -> bool:
             print("Your post could not be shared. Please try again.")
             ret = False
 
-        self._driver.quit()
+        #self._driver.quit()
         return ret
-
-
 
     except Exception as e:
         print("Error while posting content: ", e)

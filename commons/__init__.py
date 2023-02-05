@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy.engine import Engine
 
 
-
 class UnknownDBError(Exception):
     pass
 

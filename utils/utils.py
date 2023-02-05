@@ -1,11 +1,9 @@
 import datetime
-import requests
 import json
 from typing import Optional, Union
-import random
 
+import requests
 from commons.models.schemas import Sites, Queue
-from sqlalchemy import insert
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import func
 
@@ -46,24 +44,17 @@ class DBProcess:
         if isinstance(fetch_by, str):
             ret = {}
             resp = self.session.query(model).order_by(func.random()).first()
-            ret['id'] = resp.id
+            ret["id"] = resp.id
             ret["description"] = resp.description
-
-            ret['binary_data'] = resp.binary_data
-
-            # ret = json.loads(resp[column])
-            # TODO: fix dynamic column name
-            media = json.loads(resp.medias)
-            ret["media"] = media
-
+            ret["binary_data"] = resp.binary_data
+            ret["media"] = json.loads(resp.medias)
         return ret
 
     def write(self, content, extracted_content) -> None:
         """write json files"""
 
         # ** write sites db
-        if extracted_content['is_private'] and \
-                'medias' not in extracted_content:
+        if extracted_content["is_private"] and "medias" not in extracted_content:
             return
 
         last_update = datetime.datetime.today()
@@ -81,9 +72,10 @@ class DBProcess:
         mapped = [
             {
                 "medias": json.dumps(m, indent=2),
-                "description": emoji_validator(),
+                "description": emoji_validator(username=self.username),
                 "last_update": last_update,
-                "binary_data": create_bin(m['download_url']),
+                "binary_data": create_bin(m["download_url"]),
+                "sites": self.username
             }
             for m in extracted_content["medias"]
         ]
@@ -96,7 +88,7 @@ class DBProcess:
         updated_sites = Sites(
             data=json.dumps(content, indent=2),
             extracted_data=json.dumps(extracted_content, indent=2),
-            last_update=datetime.datetime.today()
+            last_update=datetime.datetime.today(),
         )
         self.session.add(updated_sites)
         self.session.commit()
@@ -132,15 +124,12 @@ class DBProcess:
         )
         d = dict(d)
         return (
-            True if (
-                datetime.datetime.today() -
-                d["last_update"]
-            ).days <= 3 else False
+            True if (datetime.datetime.today() -
+                     d["last_update"]).days <= 3 else False
         )
 
 
 def create_bin(url: str):
-    # TODO: videoları blob'dan okumuyor hata veriyor
     print("current url in create_bin: ", url)
     return requests.get(url).content
 
@@ -170,7 +159,7 @@ def get_image_size(imp: str) -> tuple:
     return im, im.size
 
 
-def emoji_validator() -> str:
+def emoji_validator(username: str) -> str:
     # conversion = {
     #    "🤤": "&#129296;",
     #    #"🤤": "U0001F924",
@@ -183,4 +172,10 @@ def emoji_validator() -> str:
     # + u'\u2764'
 
     # return conversion[random.choice(list(conversion.keys()))]
-    return "Follow for more content ✨❤️"
+    return f"""Follow for more content ✨❤️ 
+                credit: @{username}
+                #car
+                #sportcar
+                #{username}
+                #luxurycar
+                """

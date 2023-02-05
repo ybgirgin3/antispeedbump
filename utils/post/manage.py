@@ -1,23 +1,17 @@
 # built-in
-from typing import Optional, Union
-from pathlib import Path
-from requests import Response
-import platform
-import requests
-import time
 import os
+import platform
+from pathlib import Path
+from typing import Union
+
+import helium
+from helium import *
 
 # external
-from selenium.webdriver.common.by import By
 from selenium import webdriver
-from helium import *
-from selenium.webdriver.firefox.firefox_profile import base64
 
-# local
-from .sub import _login, _post, _story
-
-import selenium
-import helium
+#  local
+from .sub import _post, _story
 
 
 class Post:
@@ -28,7 +22,7 @@ class Post:
         # passwd: str = "uZZc4-YBY:5sVW?",
         username: str = "bekocankod",
         passwd: str = ")d3::b%&.X,u3^J",
-        data_to_post: dict = None,
+        data_to_post: dict = {},
     ) -> None:
         self.username = username
         self.passwd = passwd
@@ -48,9 +42,11 @@ class Post:
         self.driver = set_driver(self._driver)
         self.get = get_driver()
 
-    def post(self) -> bool: return _post(self)
+    def post(self) -> bool:
+        return _post(self)
 
-    def story(self) -> bool: return _story(self)
+    def story(self) -> bool:
+        return _story(self)
 
     def _fill(self, attr: str, value: str):
         """
@@ -92,23 +88,19 @@ class Post:
         return ret
 
     def download(self) -> Union[dict, None]:
-        import uuid
 
         media = self.data_to_post["media"]
-        binary_data = self.data_to_post['binary_data']
+        binary_data = self.data_to_post["binary_data"]
         is_video = media["is_video"]
-        #media_url = media["download_url"]
-        blob = media
         if is_video:
-            #filename = f"{uuid.uuid4()}.mp4"
             filename = "blob.mp4"
         else:
-            #filename = f"{uuid.uuid4()}.jpeg"
             filename = "blob.jpeg"
 
         f = _download(blob=binary_data, filename=filename)
 
         return {
+            "id": self.data_to_post['id'],
             "file_type": "video" if is_video else "image",
             "description": self.data_to_post["description"],
             "binary": f,
@@ -121,7 +113,7 @@ def _download(blob, filename):
 
     fp = os.path.join(tempfile.gettempdir(), filename)
 
-    with open(fp, 'wb') as f:
+    with open(fp, "wb") as f:
         f.write(blob)
 
     content_size = os.stat(fp).st_size
