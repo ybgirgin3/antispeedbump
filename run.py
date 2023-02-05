@@ -36,7 +36,19 @@ def find(username: str, collect: bool):
 @cli.command()
 @click.option("--type", type=str, default="post", help="standart post")
 def post(type: str):
-    ret = Bot(post_type=type).post_content()
+    import json
+
+    # read creds
+    with open('credientials.json') as f:
+        creds = json.loads(f.read())
+
+    ret = Bot(
+        username=creds['username'],
+        password=creds['password'],
+
+        # username="bekocankod",
+        # password=")d3::b%&.X,u3^J",
+        post_type=type).post_content()
     pprint(ret)
 
 

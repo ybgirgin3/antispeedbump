@@ -1,7 +1,19 @@
 from helium import go_to, Button, wait_until
 
+# read creds
+
+
+def creds():
+    import json
+    with open('credientials.json') as f:
+        cred = json.loads(f.read())
+    return cred
+
 
 def _login(self) -> bool:
+    print("username in log: ", self.username)
+    print("password in log: ", self.passwd)
+
     try:
         go_to(self.url)  # go to url
         # ***  LOGIN
@@ -33,5 +45,5 @@ def _login(self) -> bool:
         return True
 
     except Exception as e:
-        print({"message": e})
+        print({f"_login_message": e})
         return False

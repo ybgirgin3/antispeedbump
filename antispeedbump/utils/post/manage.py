@@ -1,12 +1,10 @@
 # built-in
 import os
 import platform
-from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 
 import helium
 from helium import *
-
 # external
 from selenium import webdriver
 
@@ -16,38 +14,40 @@ from .sub import _post, _story
 
 class Post:
     def __init__(
-        self,
-        url: str = "www.instagram.com",
-        # username: str = "koddeneme260",
-        # passwd: str = "uZZc4-YBY:5sVW?",
-        username: str = "bekocankod",
-        passwd: str = ")d3::b%&.X,u3^J",
-        data_to_post: dict = {},
+            self,
+            url: str = "www.instagram.com",
+            username: str = "",
+            password: str = "",
+            #username: str = "koddeneme260",
+            #passwd: str = "uZZc4-YBY:5sVW?",
+            # username: str = "bekocankod",
+            # passwd: str = ")d3::b%&.X,u3^J",
+            #loginname: str = "",
+            #passwd: str = "",
+            data_to_post: dict = {},
+            driver_path: Optional[str] = os.path.join(
+                os.getcwd(),
+                f"antispeedbump/configs/driver/{platform.system().lower()}/chromedriver"
+            )
+            # driver_path: Optional[str] = os.path.join(
+            #    os.getcwd(),
+            #    f"antispeedbump/configs/driver/{platform.system().lower()}/geckodriver"
+            # )
     ) -> None:
         self.username = username
-        self.passwd = passwd
+        self.passwd = password
         self.data_to_post = data_to_post
         self.url = url
         self.downloadable = self.download()
 
-        #chrome_options = webdriver.ChromeOptions()
-        # chrome_options.add_argument("--incognito")
-        firefox_options = webdriver.FirefoxOptions()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--incognito")
+        # firefox_options = webdriver.FirefoxOptions()
+        # firefox_options.add_argument("--incognito")
 
-        # driver_path = os.path.join(
-        #    Path().parent.absolute(),
-        #    f"configs/driver/{platform.system().lower()}/chromedriver",
-        # )
-
-        driver_path = os.path.join(
-            # Path().parent.absolute(),
-            os.getcwd(),
-            f"antispeedbump/configs/driver/{platform.system().lower()}/geckodriver"
-        )
-
-        #self._driver = webdriver.Chrome(driver_path, options=chrome_options)
-        self._driver = webdriver.Firefox(
-            executable_path=driver_path, options=firefox_options)
+        self._driver = webdriver.Chrome(driver_path, options=chrome_options)
+        # self._driver = webdriver.Firefox(
+        #   executable_path=driver_path, options=firefox_options)
         self.driver = set_driver(self._driver)
         self.get = get_driver()
 

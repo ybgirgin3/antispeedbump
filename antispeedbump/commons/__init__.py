@@ -14,14 +14,14 @@ class UnknownDBError(Exception):
 
 SQL_ALCHEMY_ENGINES = {
     "antispeedbump": create_engine(
-        f"sqlite:///{os.getcwd()}/antispeedbump.db",
+        f"sqlite:///{os.getcwd()}/database.db",
         echo=False,
     )
 }
 
 
 def _create_table(model: str, db_engine: Engine):
-    # example usage: _create_table("Sites", SQL_ALCHEMY_ENGINES['sites'])
+    # example usage: _create_table("Sites", SQL_ALCHEMY_ENGINES['sites'])
 
     model = getattr(schemas, model)
     model.__table__.create(db_engine)

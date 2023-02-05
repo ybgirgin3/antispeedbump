@@ -1,18 +1,28 @@
 from typing import Optional
+import json
 
 from antispeedbump.commons import session
 from antispeedbump.commons.models.schemas import Sites, Queue
 from antispeedbump.utils import MediaProcess, Post, DBProcess
 
 
-
 class Bot:
     def __init__(
             self,
+            username: Optional[str] = "",
+            password: Optional[str] = "",
+            # username="bekocankod",
+            # password=")d3::b%&.X,u3^J",
             target_user: Optional[str] = "",
             will_create_content: Optional[bool] = False,
             post_type: Optional[str] = "post",
     ):
+        #self.creds = credientials
+        #print("type of creds: ", type(self.creds))
+        #self.loginname = loginname
+        #self.password = password
+        self.username = username
+        self.password = password
         self.target_user = target_user
         self.will_create_content = will_create_content
         self.post_type = post_type
@@ -72,6 +82,11 @@ class Bot:
 
             Return: None
             """
+
+            # read creds
+            # with open(self.creds_file) as f:
+            #    creds = json.loads(f.read())
+
             with session() as sess:
                 # create instance
                 db_process = DBProcess(sess=sess, username=self.target_user)
@@ -82,7 +97,11 @@ class Bot:
                       media["id"], media["description"])
 
                 # post content
-                if Post(data_to_post=media).post() == True:
+                if Post(
+                        username=self.username,
+                        password=self.password,
+                        data_to_post=media
+                ).post() == True:
                     db_process.delete(Queue, media["id"])
 
         def _story():

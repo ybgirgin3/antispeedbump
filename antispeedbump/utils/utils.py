@@ -171,8 +171,9 @@ def emoji_validator(original_description: str, username: str) -> str:
     # }
     # + u'\u2764'
 
-    # return conversion[random.choice(list(conversion.keys()))]
-    return f"""{original_description}
+    # TODO: original_description içinde eğer sayfanın kendi adını "follow bla bla"
+    # olarak tanıttığı bir kısım varsa onu regex ile ortadan kaldırmak lazım
+    return f"""{remove_self_promotion(remove_emojis(original_description), username)}
     .......
     Follow for more content ✨❤️ 
     credit: @{username}
@@ -182,3 +183,46 @@ def emoji_validator(original_description: str, username: str) -> str:
     #{username}
     #luxurycar
     """
+
+
+def remove_emojis(string: str) -> str:
+    """
+    remove emojis from desc
+    4 char long emojis not supported in chromedriver
+    """
+
+    import emoji
+    import random
+
+    replacing_emojis = {
+            "🎥": ["by", "camera", "cameraman"]
+            }
+
+    for char in string:
+        if emoji.is_emoji(char):
+            if char in replacing_emojis:
+                rep = random.choice(replacing_emojis[char])
+            else:
+                rep = ""
+
+            string = string.replace(char, rep)
+
+    return string
+
+
+def remove_self_promotion(string: str, username) -> str:
+    """
+    remove self promotion in original_description
+    because I already promoting :)
+    """
+    string = string.split()
+    for each in string:
+        if each.startswith('@'):
+            if each == f"@{username}":
+                string.remove(each)
+
+    return " ".join(string)
+
+
+
+
