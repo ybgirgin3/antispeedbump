@@ -35,10 +35,11 @@ class Expressions:
             node = media["node"]
             is_video = node["is_video"]
             download_url = node["video_url"] if is_video else node["display_url"]
-            #orginal_desc = node['edge_media_to_caption']['edges']['text']
+            original_desc = node['edge_media_to_caption']['edges'][0]['node']['text']
 
             _ret["is_video"] = is_video
             _ret["download_url"] = download_url
+            _ret['original_description'] = original_desc
 
             _medias.append(_ret)
 

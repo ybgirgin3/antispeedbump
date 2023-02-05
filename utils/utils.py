@@ -72,7 +72,7 @@ class DBProcess:
         mapped = [
             {
                 "medias": json.dumps(m, indent=2),
-                "description": emoji_validator(username=self.username),
+                "description": emoji_validator(m['original_description'], self.username),
                 "last_update": last_update,
                 "binary_data": create_bin(m["download_url"]),
                 "sites": self.username
@@ -159,7 +159,7 @@ def get_image_size(imp: str) -> tuple:
     return im, im.size
 
 
-def emoji_validator(username: str) -> str:
+def emoji_validator(original_description: str, username: str) -> str:
     # conversion = {
     #    "🤤": "&#129296;",
     #    #"🤤": "U0001F924",
@@ -173,9 +173,11 @@ def emoji_validator(username: str) -> str:
 
     # return conversion[random.choice(list(conversion.keys()))]
     return f"""Follow for more content ✨❤️ 
-                credit: @{username}
-                #car
-                #sportcar
-                #{username}
-                #luxurycar
-                """
+    credit: @{username}
+    Original Description: {original_description}
+
+    #car
+    #sportcar
+    #{username}
+    #luxurycar
+    """

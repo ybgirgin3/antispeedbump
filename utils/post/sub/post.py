@@ -22,7 +22,8 @@ def _post(self) -> bool:
         self._button_event(attr=share_button)
 
         # attach file
-        drag_file(self.downloadable["binary"], to="Drag photos and videos here")
+        drag_file(self.downloadable["binary"],
+                  to="Drag photos and videos here")
 
         # is_video?
         if self.downloadable["file_type"] == "video":
@@ -62,7 +63,8 @@ def _post(self) -> bool:
         # find description area
         time.sleep(3)
         desc_area = self._find_attr(
-            attr="//*[name()='textarea' and @aria-label='Write a caption...']",
+            #attr="//*[name()='textarea' and @aria-label='Write a caption...']",
+            attr="//html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/div/div/div[2]/div[2]/div/div/div/div[2]/div[1]/textarea",
             with_s=True,
             prefix="desc area",
         )[0]
@@ -79,14 +81,14 @@ def _post(self) -> bool:
         self._button_event(attr=sb)
 
         # Wait for the "Your post has beed shared" message
-        #time.sleep(5)
+        # time.sleep(5)
 
         # cs = Text("Your post could not be shared. Please try again.")
         ps = Text("Your post has been shared.")
         time.sleep(15)
-        
+
         # TODO: Post yollarken eğer try again çıkarsa ve o butona basarsak,
-        # post yollanma işlemi aynı ayarlar ile tekrardan devam ediyor ve genellikle
+        # post yollanma işlemi aynı ayarlar ile tekrardan devam ediyor ve genellikle
         # yollama işlemi başarılı oluyor.
         # eğer try again gelirse o butona bastır...
 
@@ -100,7 +102,7 @@ def _post(self) -> bool:
             print("Your post could not be shared. Please try again.")
             ret = False
 
-        #self._driver.quit()
+        # self._driver.quit()
         return ret
 
     except Exception as e:

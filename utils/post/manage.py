@@ -10,7 +10,7 @@ from helium import *
 # external
 from selenium import webdriver
 
-#  local
+#  local
 from .sub import _post, _story
 
 
@@ -30,15 +30,24 @@ class Post:
         self.url = url
         self.downloadable = self.download()
 
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--incognito")
+        #chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_argument("--incognito")
+        firefox_options = webdriver.FirefoxOptions()
+
+        # driver_path = os.path.join(
+        #    Path().parent.absolute(),
+        #    f"configs/driver/{platform.system().lower()}/chromedriver",
+        # )
 
         driver_path = os.path.join(
-            Path().parent.absolute(),
-            f"configs/driver/{platform.system().lower()}/chromedriver",
+            # Path().parent.absolute(),
+            os.getcwd(),
+            f"configs/driver/{platform.system().lower()}/geckodriver"
         )
 
-        self._driver = webdriver.Chrome(driver_path, options=chrome_options)
+        #self._driver = webdriver.Chrome(driver_path, options=chrome_options)
+        self._driver = webdriver.Firefox(
+            executable_path=driver_path, options=firefox_options)
         self.driver = set_driver(self._driver)
         self.get = get_driver()
 
