@@ -13,6 +13,7 @@ class Bot:
             password: Optional[str] = "",
             # username="bekocankod",
             # password=")d3::b%&.X,u3^J",
+            driver_path: Optional[str] = "",
             target_user: Optional[str] = "",
             will_create_content: Optional[bool] = False,
             post_type: Optional[str] = "post",
@@ -23,6 +24,7 @@ class Bot:
         #self.password = password
         self.username = username
         self.password = password
+        self.driver_path = driver_path
         self.target_user = target_user
         self.will_create_content = will_create_content
         self.post_type = post_type
@@ -76,11 +78,11 @@ class Bot:
             return extracted_content
 
     def post_content(self) -> None:
-        def _post() -> None:
+        def _post() -> dict:
             """
             image post
 
-            Return: None
+            Return: dict 
             """
 
             # read creds
@@ -100,9 +102,15 @@ class Bot:
                 if Post(
                         username=self.username,
                         password=self.password,
-                        data_to_post=media
+                        data_to_post=media,
+                        driver_path=self.driver_path
                 ).post() == True:
-                    db_process.delete(Queue, media["id"])
+                    is_deleted = db_process.delete(Queue, media["id"])
+                    del media['binary_data']
+                    return {
+                        "posted_content": media,
+                        "is_deleted": is_deleted
+                    }
 
         def _story():
             pass
@@ -124,4 +132,4 @@ class Bot:
 
         # except Exception as e:
         #    print("Error while post_content: ", e)
-        _post()
+        return _post()

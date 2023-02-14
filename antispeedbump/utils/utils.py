@@ -98,6 +98,7 @@ class DBProcess:
         print("_Del: ", _del)
         self.session.delete(_del)
         self.session.commit()
+        return True
 
     def is_site_exists(self) -> bool:
         """control if file exists"""

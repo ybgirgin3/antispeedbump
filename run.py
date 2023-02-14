@@ -45,6 +45,7 @@ def post(type: str):
     ret = Bot(
         username=creds['username'],
         password=creds['password'],
+        driver_path=creds['driver'],
 
         # username="bekocankod",
         # password=")d3::b%&.X,u3^J",
