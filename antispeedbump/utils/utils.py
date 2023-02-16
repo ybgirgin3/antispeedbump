@@ -65,6 +65,7 @@ class DBProcess:
             extracted_data=json.dumps(extracted_content, indent=2),
             last_update=last_update,
         )
+        print("writing sites...")
         self.session.add(sites)
         self.session.commit()
 
@@ -79,6 +80,7 @@ class DBProcess:
             }
             for m in extracted_content["medias"]
         ]
+        print("writing mapped queue")
 
         self.session.bulk_insert_mappings(Queue, mapped)
         self.session.commit()
