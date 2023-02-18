@@ -223,6 +223,3 @@ def remove_self_promotion(string: str, username) -> str:
 
     return " ".join(string)
 
-
-
-

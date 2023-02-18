@@ -102,7 +102,7 @@ def _post(self) -> bool:
             print("Your post could not be shared. Please try again.")
             ret = False
 
-        # self._driver.quit()
+        self._driver.quit()
         return ret
 
     except Exception as e:

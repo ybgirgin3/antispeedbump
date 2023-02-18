@@ -13,9 +13,7 @@ def cli():
 
 @cli.command()
 @click.option("--username", type=str, default="", help="username to dig profile in")
-@click.option(
-    "--collect", is_flag=True, default=False, help="Download last post or not"
-)
+@click.option("--collect", is_flag=True, default=False, help="Download last post or not")
 def find(username: str, collect: bool):
     if not Path("antispeedbump.db").exists():
         from antispeedbump.commons import SQL_ALCHEMY_ENGINES, _create_table
@@ -45,11 +43,20 @@ def post(type: str):
     ret = Bot(
         username=creds['username'],
         password=creds['password'],
-
-        # username="bekocankod",
-        # password=")d3::b%&.X,u3^J",
+        driver=creds['driver'],
         post_type=type).post_content()
     pprint(ret)
+
+
+#@cli.command()
+#@click.option("--version", type=int, help="newer version of chromedriver")
+#def driver_update(version: int):
+#    import requests
+#    url = "https://chromedriver.storage.googleapis.com/index.html"
+#    ret = requests.get(url).content
+#    print(ret)
+
+
 
 
 if __name__ == "__main__":
