@@ -1,7 +1,12 @@
 # built-in
+from zipfile import ZipFile
+from tqdm import tqdm
+import requests
 import os
+import sys
 import platform
 from typing import Union, Optional
+from pathlib import Path
 
 import helium
 from helium import *
@@ -18,21 +23,15 @@ class Post:
             url: str = "www.instagram.com",
             username: str = "",
             password: str = "",
-            #username: str = "koddeneme260",
-            #passwd: str = "uZZc4-YBY:5sVW?",
+            # username: str = "koddeneme260",
+            # passwd: str = "uZZc4-YBY:5sVW?",
             # username: str = "bekocankod",
             # passwd: str = ")d3::b%&.X,u3^J",
-            #loginname: str = "",
-            #passwd: str = "",
             data_to_post: dict = {},
             driver_path: Optional[str] = os.path.join(
                 os.getcwd(),
                 f"antispeedbump/configs/driver/{platform.system().lower()}/chromedriver"
             )
-            # driver_path: Optional[str] = os.path.join(
-            #    os.getcwd(),
-            #    f"antispeedbump/configs/driver/{platform.system().lower()}/geckodriver"
-            # )
     ) -> None:
         self.username = username
         self.passwd = password
@@ -42,12 +41,14 @@ class Post:
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
-        # firefox_options = webdriver.FirefoxOptions()
-        # firefox_options.add_argument("--incognito")
+
+        if not Path(driver_path).is_file(): # if driver is in path
+            download_driver()
 
         self._driver = webdriver.Chrome(driver_path, options=chrome_options)
-        # self._driver = webdriver.Firefox(
-        #   executable_path=driver_path, options=firefox_options)
+
+        version_control(self._driver)
+
         self.driver = set_driver(self._driver)
         self.get = get_driver()
 
@@ -142,3 +143,68 @@ def delete(fp: str) -> None:
         fp (str): _description_
     """
     os.remove(fp)
+
+
+def download_driver(chunk_size=128):
+    new_ver = str(input("Newer version of chromedriver [ref: https://chromedriver.storage.googleapis.com/index.html] :"))
+
+    o = {
+            "darwin": "mac",
+            "linux": "linux",
+            "windows": "windows"
+            }
+    v = {
+            "arm64": "arm64",
+            "x86_64": "{}64",
+        }
+
+    _os = f"{o[platform.system().lower()]}_{v[os.uname().machine]}"
+
+    _fn = f"chromedriver_{_os}.zip"
+    _path = f"antispeedbump/configs/driver/{platform.system().lower()}"
+    fn = f"{_path}/{_fn}"
+    url = f"https://chromedriver.storage.googleapis.com/{new_ver}/{_fn}"
+    r = requests.get(url, stream=True)
+    total = int(r.headers.get('content-length', 0))
+
+    # download zip file
+    pbar = tqdm(total=total, unit="iB", unit_scale=True, unit_divisor=1024) 
+    with open(fn, 'wb') as f:
+        pbar.set_description(f"Downloading driver {fn}")
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            s = f.write(chunk)
+            pbar.update(s)
+
+    # unzip file
+    with ZipFile(fn, 'r') as zObj:
+        zObj.extractall(_path)
+        print("file extracted")
+
+    # make file executable
+    os.system(f"chmod +x {_path}/chromedriver")
+
+
+    sys.exit(1)
+
+
+def version_control(driver):
+    """control version of chrome and match it to chromedriver"""
+
+    br_ver = driver.capabilities['browserVersion']
+    ch_ver = driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
+
+    print("version of browserVersion: ", br_ver)
+    print("version of chromedriverversion: ", ch_ver)
+
+    #ver.split(".")[0]
+    if int(br_ver.split(".")[0]) != int(ch_ver.split(".")[0]):
+        new_dr_perm = str(input("Different version of driver needs to be installed. Do you want to continue: [Y/n]" ))
+        if new_dr_perm in ('Y', 'y'):
+            if download_driver():
+                print("please re-start app..")
+                sys.exit(1)
+            else:
+                print("unknown error while installing driver..")
+        else: 
+            print("unable to continue with unmatched version of driver.. exiting...")
+

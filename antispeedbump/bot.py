@@ -11,6 +11,7 @@ class Bot:
             self,
             username: Optional[str] = "",
             password: Optional[str] = "",
+            driver: Optional[str] = "",
             # username="bekocankod",
             # password=")d3::b%&.X,u3^J",
             driver_path: Optional[str] = "",
@@ -24,7 +25,7 @@ class Bot:
         #self.password = password
         self.username = username
         self.password = password
-        self.driver_path = driver_path
+        self.driver = driver
         self.target_user = target_user
         self.will_create_content = will_create_content
         self.post_type = post_type
@@ -103,7 +104,7 @@ class Bot:
                         username=self.username,
                         password=self.password,
                         data_to_post=media,
-                        driver_path=self.driver_path
+                        driver_path=self.driver
                 ).post() == True:
                     is_deleted = db_process.delete(Queue, media["id"])
                     del media['binary_data']

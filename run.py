@@ -13,9 +13,7 @@ def cli():
 
 @cli.command()
 @click.option("--username", type=str, default="", help="username to dig profile in")
-@click.option(
-    "--collect", is_flag=True, default=False, help="Download last post or not"
-)
+@click.option("--collect", is_flag=True, default=False, help="Download last post or not")
 def find(username: str, collect: bool):
     if not Path("database.db").exists():
         from antispeedbump.commons import SQL_ALCHEMY_ENGINES, _create_table
@@ -45,10 +43,7 @@ def post(type: str):
     ret = Bot(
         username=creds['username'],
         password=creds['password'],
-        driver_path=creds['driver'],
-
-        # username="bekocankod",
-        # password=")d3::b%&.X,u3^J",
+        driver=creds['driver'],
         post_type=type).post_content()
     pprint(ret)
 

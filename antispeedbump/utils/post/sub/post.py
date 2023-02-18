@@ -102,6 +102,7 @@ def _post(self) -> bool:
             print("Your post could not be shared. Please try again.")
             ret = False
 
+        time.sleep(20)
         self._driver.quit()
         return ret
 
