@@ -41,8 +41,9 @@ class Post:
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
+        chrome_options.add_argument("--headless")
 
-        if not Path(driver_path).is_file(): # if driver is in path
+        if not Path(driver_path).is_file():  # if driver is in path
             download_driver()
 
         self._driver = webdriver.Chrome(driver_path, options=chrome_options)
