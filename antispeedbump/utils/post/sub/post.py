@@ -63,8 +63,8 @@ def _post(self) -> bool:
         # find description area
         time.sleep(3)
         desc_area = self._find_attr(
-            #attr="//*[name()='textarea' and @aria-label='Write a caption...']",
-            attr="//html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/div/div/div[2]/div[2]/div/div/div/div[2]/div[1]/textarea",
+            attr="//*[@aria-label='Write a caption...']",
+            #attr="//html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/div/div/div[2]/div[2]/div/div/div/div[2]/div[1]/textarea",
             with_s=True,
             prefix="desc area",
         )[0]
