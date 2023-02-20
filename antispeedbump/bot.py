@@ -104,7 +104,7 @@ class Bot:
                         username=self.username,
                         password=self.password,
                         data_to_post=media,
-                        driver_path=self.driver
+                        #driver_path=self.driver
                 ).post() == True:
                     is_deleted = db_process.delete(Queue, media["id"])
                     del media['binary_data']
