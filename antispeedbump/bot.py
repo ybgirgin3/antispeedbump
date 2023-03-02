@@ -1,5 +1,4 @@
 from typing import Optional
-import json
 
 from antispeedbump.commons import session
 from antispeedbump.commons.models.schemas import Sites, Queue
@@ -11,26 +10,17 @@ class Bot:
             self,
             username: Optional[str] = "",
             password: Optional[str] = "",
-            driver: Optional[str] = "",
-            # username="bekocankod",
-            # password=")d3::b%&.X,u3^J",
-            driver_path: Optional[str] = "",
             target_user: Optional[str] = "",
             will_create_content: Optional[bool] = False,
             post_type: Optional[str] = "post",
+            headless: bool = True
     ):
-        #self.creds = credientials
-        #print("type of creds: ", type(self.creds))
-        #self.loginname = loginname
-        #self.password = password
         self.username = username
         self.password = password
-        self.driver = driver
         self.target_user = target_user
         self.will_create_content = will_create_content
         self.post_type = post_type
-
-        # create session
+        self.headless = headless
 
     def get_data_from_another(self):
         with session() as sess:
@@ -104,8 +94,8 @@ class Bot:
                         username=self.username,
                         password=self.password,
                         data_to_post=media,
-                        driver_path=self.driver
-                ).post() == True:
+                        headless=self.headless
+                ).post():
                     is_deleted = db_process.delete(Queue, media["id"])
                     del media['binary_data']
                     return {

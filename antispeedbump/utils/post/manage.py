@@ -1,17 +1,17 @@
 # built-in
-from zipfile import ZipFile
-from tqdm import tqdm
-import requests
 import os
-import sys
 import platform
 from typing import Union, Optional
-from pathlib import Path
+import sys
+from zipfile import ZipFile
+import requests
+from tqdm import tqdm
 
 import helium
 from helium import *
 # external
 from selenium import webdriver
+from pathlib import Path
 
 #  local
 from .sub import _post, _story
@@ -28,10 +28,10 @@ class Post:
             # username: str = "bekocankod",
             # passwd: str = ")d3::b%&.X,u3^J",
             data_to_post: dict = {},
-            driver_path: Optional[str] = os.path.join(
-                os.getcwd(),
-                f"antispeedbump/configs/driver/{platform.system().lower()}/chromedriver"
-            )
+            driver: Optional[str] = os.path.join(
+                os.path.expanduser('~'), ".antispeedbump/driver/chromedriver"),
+            headless: bool = True,
+            incognito: bool = True
     ) -> None:
         self.username = username
         self.passwd = password
@@ -40,13 +40,17 @@ class Post:
         self.downloadable = self.download()
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--incognito")
-        chrome_options.add_argument("--headless")
+        if incognito:
+            chrome_options.add_argument("--incognito")
+        if headless:
+            chrome_options.add_argument("--headless")
 
-        if not Path(driver_path).is_file():  # if driver is in path
+        # if not Path(driver).is_file():  # if driver is in path
+        if not os.path.exists(driver):
             download_driver()
+        print("driver already exists")
 
-        self._driver = webdriver.Chrome(driver_path, options=chrome_options)
+        self._driver = webdriver.Chrome(driver, options=chrome_options)
 
         version_control(self._driver)
 
@@ -54,9 +58,19 @@ class Post:
         self.get = get_driver()
 
     def post(self) -> bool:
+        """_summary_
+
+        Returns:
+            bool: _description_
+        """
         return _post(self)
 
     def story(self) -> bool:
+        """_summary_
+
+        Returns:
+            bool: _description_
+        """
         return _story(self)
 
     def _fill(self, attr: str, value: str):
@@ -147,29 +161,34 @@ def delete(fp: str) -> None:
 
 
 def download_driver(chunk_size=128):
-    new_ver = str(input("Newer version of chromedriver [ref: https://chromedriver.storage.googleapis.com/index.html] :"))
+    new_ver = str(input(
+        "Newer version of chromedriver [ref: https://chromedriver.storage.googleapis.com/index.html] : "))
 
     o = {
-            "darwin": "mac",
-            "linux": "linux",
-            "windows": "windows"
-            }
+        "darwin": "mac",
+        "linux": "linux",
+        "windows": "windows"
+    }
     v = {
-            "arm64": "arm64",
-            "x86_64": "{}64",
-        }
+        "arm64": "arm64",
+        "x86_64": "{}64",
+    }
 
     _os = f"{o[platform.system().lower()]}_{v[os.uname().machine]}"
 
     _fn = f"chromedriver_{_os}.zip"
-    _path = f"antispeedbump/configs/driver/{platform.system().lower()}"
+    _path = f"{os.path.expanduser('~')}/.antispeedbump/driver"
     fn = f"{_path}/{_fn}"
     url = f"https://chromedriver.storage.googleapis.com/{new_ver}/{_fn}"
     r = requests.get(url, stream=True)
     total = int(r.headers.get('content-length', 0))
 
+    # create dir
+    Path(_path).mkdir(parents=True, exist_ok=True)
+    print("path created")
+
     # download zip file
-    pbar = tqdm(total=total, unit="iB", unit_scale=True, unit_divisor=1024) 
+    pbar = tqdm(total=total, unit="iB", unit_scale=True, unit_divisor=1024)
     with open(fn, 'wb') as f:
         pbar.set_description(f"Downloading driver {fn}")
         for chunk in r.iter_content(chunk_size=chunk_size):
@@ -184,12 +203,11 @@ def download_driver(chunk_size=128):
     # make file executable
     os.system(f"chmod +x {_path}/chromedriver")
 
-
     sys.exit(1)
 
 
 def version_control(driver):
-    """control version of chrome and match it to chromedriver"""
+    "control version of chrome and match it to chromedriver"
 
     br_ver = driver.capabilities['browserVersion']
     ch_ver = driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
@@ -197,15 +215,16 @@ def version_control(driver):
     print("version of browserVersion: ", br_ver)
     print("version of chromedriverversion: ", ch_ver)
 
-    #ver.split(".")[0]
+    # ver.split(".")[0]
     if int(br_ver.split(".")[0]) != int(ch_ver.split(".")[0]):
-        new_dr_perm = str(input("Different version of driver needs to be installed. Do you want to continue: [Y/n]" ))
-        if new_dr_perm in ('Y', 'y'):
-            if download_driver():
-                print("please re-start app..")
-                sys.exit(1)
-            else:
-                print("unknown error while installing driver..")
-        else: 
-            print("unable to continue with unmatched version of driver.. exiting...")
-
+        #new_dr_perm = str(input("Different version of driver needs to be installed. Do you want to continue: [Y/n]" ))
+        print("Different version of driver needs to be installed..")
+        download_driver()
+        # if new_dr_perm in ('Y', 'y'):
+        #    if download_driver():
+        #        print("please re-start app..")
+        #        sys.exit(1)
+        #    else:
+        #        print("unknown error while installing driver..")
+        # else:
+        #    print("unable to continue with unmatched version of driver.. exiting...")

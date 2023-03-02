@@ -1,5 +1,6 @@
 from pathlib import Path
 from pprint import pprint
+import json
 
 import click
 
@@ -26,16 +27,16 @@ def find(username: str, collect: bool):
         will_create_content=collect,
     ).get_data_from_another()
     # print(ret['full_name'], ret['profile_picture'])
-    pret = {"full_name": ret["full_name"],
-            "profile_picture": ret["profile_picture"]}
+    pret = {
+        "full_name": ret["full_name"],
+        "profile_picture": ret["profile_picture"]
+    }
     pprint(pret)
 
 
 @cli.command()
-@click.option("--type", type=str, default="post", help="standart post")
-def post(type: str):
-    import json
-
+@click.option("--handle", type=str, default="post", help="standart post")
+def post(handle: str):
     # read creds
     with open('credientials.json') as f:
         creds = json.loads(f.read())
@@ -43,8 +44,8 @@ def post(type: str):
     ret = Bot(
         username=creds['username'],
         password=creds['password'],
-        driver=creds['driver'],
-        post_type=type).post_content()
+        headless=creds['headless'],
+        post_type=handle).post_content()
     pprint(ret)
 
 

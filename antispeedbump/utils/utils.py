@@ -34,6 +34,7 @@ class DBProcess:
         """
 
         column_attr = getattr(model, column)
+        ret = {}
 
         if isinstance(fetch_by, tuple):
             sub_q = getattr(model, fetch_by[0])
@@ -42,7 +43,6 @@ class DBProcess:
             ret = json.loads(resp[column])
 
         if isinstance(fetch_by, str):
-            ret = {}
             resp = self.session.query(model).order_by(func.random()).first()
             ret["id"] = resp.id
             ret["description"] = resp.description
@@ -95,7 +95,7 @@ class DBProcess:
         self.session.add(updated_sites)
         self.session.commit()
 
-    def delete(self, model: Union[Sites, Queue], data_id: int = 1) -> None:
+    def delete(self, model: Union[Sites, Queue], data_id: int = 1) -> bool:
         _del = self.session.query(model).where(model.id == data_id).first()
         print("_Del: ", _del)
         self.session.delete(_del)
