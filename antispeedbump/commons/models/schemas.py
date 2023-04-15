@@ -8,20 +8,20 @@ Base = declarative_base()
 
 
 class Sites(Base):
-    __tablename__ = "sites"
+  __tablename__ = "sites"
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    data = Column(String)
-    extracted_data = Column(String)
-    last_update = Column(DateTime, default=datetime.datetime.utcnow())
+  id = Column(Integer, primary_key=True)
+  username = Column(String, unique=True)
+  data = Column(String)
+  extracted_data = Column(String)
+  last_update = Column(DateTime, default=datetime.datetime.utcnow())
 
 
 class Queue(Base):
-    __tablename__ = "queue"
+  __tablename__ = "queue"
 
-    id = Column(Integer, primary_key=True)
-    description = Column(String)
-    medias = Column(String)
-    binary_data = Column(LargeBinary)
-    last_update = Column(DateTime, default=datetime.datetime.utcnow())
+  id = Column(Integer, primary_key=True)
+  description = Column(String)
+  medias = Column(String)
+  binary_data = Column(LargeBinary)
+  last_update = Column(DateTime, default=datetime.datetime.utcnow())

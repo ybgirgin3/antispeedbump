@@ -11,64 +11,64 @@ from requests import Response
 
 
 def _(fn):
-    with open(f"configs/settings/post/{fn}") as f:
-        return json.load(f)
+  with open(f"configs/settings/post/{fn}") as f:
+    return json.load(f)
 
 
 GET_HEADERS = _("story.json")
 
 
 class Story:
-    story_headers = {
-        "referrer": "https://www.instagram.com/create/story/",
-        "referrerPolicy": "strict-origin-when-cross-origin",
-        f"body": "upload_id={_upload_id}&caption=",
-        # "method": "POST",
-        # "mode": "cors",
-        # "credentials": "include"
-    }
-    login_header = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko)"
-        " Chrome/77.0.3865.120 Safari/537.36",
-        "X-Requested-With": "XMLHttpRequest",
-        "Referer": "https://www.instagram.com/accounts/login/",
-        "x-csrftoken": "{csrftoken}",
-    }
-    username = "SessionDeneme"
-    password = "'G7&z-E/*Gx4k^"
+  story_headers = {
+    "referrer": "https://www.instagram.com/create/story/",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    f"body": "upload_id={_upload_id}&caption=",
+    # "method": "POST",
+    # "mode": "cors",
+    # "credentials": "include"
+  }
+  login_header = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko)"
+    " Chrome/77.0.3865.120 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest",
+    "Referer": "https://www.instagram.com/accounts/login/",
+    "x-csrftoken": "{csrftoken}",
+  }
+  username = "SessionDeneme"
+  password = "'G7&z-E/*Gx4k^"
 
-    payload = {
-        "username": username,
-        # "password": password,
-        "enc_password": "#PWD_INSTAGRAM_BROWSER:0:{_time}:{password}",
-    }
+  payload = {
+    "username": username,
+    # "password": password,
+    "enc_password": "#PWD_INSTAGRAM_BROWSER:0:{_time}:{password}",
+  }
 
-    def __init__(self) -> None:
-        self.story_url = (
-            "https://www.instagram.com/api/v1/web/create/configure_to_story/"
-        )
-        self.login_url = "https://www.instagram.com/api/v1/web/data/shared_data/"
+  def __init__(self) -> None:
+    self.story_url = (
+      "https://www.instagram.com/api/v1/web/create/configure_to_story/"
+    )
+    self.login_url = "https://www.instagram.com/api/v1/web/data/shared_data/"
 
-        self.upload_id = str(int(time.time() * 1000))
-        self.story_headers = complete_dict(
-            raw_headers=GET_HEADERS, custom_headers=self.story_headers
-        )
+    self.upload_id = str(int(time.time() * 1000))
+    self.story_headers = complete_dict(
+      raw_headers=GET_HEADERS, custom_headers=self.story_headers
+    )
 
-        self.session = requests.Session()
+    self.session = requests.Session()
 
-        # TODO:
-        # * Resmin boyutları story boyutlarına uyuyor mu onu kontrol et.
-        # * uyuyorsa eğer binary olarak kayıt işlemlerini yeniden yap
-        # * csrf tokenları vs alma işlemine devam et
+    # TODO:
+    # * Resmin boyutları story boyutlarına uyuyor mu onu kontrol et.
+    # * uyuyorsa eğer binary olarak kayıt işlemlerini yeniden yap
+    # * csrf tokenları vs alma işlemine devam et
 
-        def _login(self):
-            _time: int = int(datetime.datetime.timestamp())
+    def _login(self):
+      _time: int = int(datetime.datetime.timestamp())
 
-            # get login tokens
-            response = requests.get(self.login_url)
-            csrf = response.cookies["csrftoken"]
+      # get login tokens
+      response = requests.get(self.login_url)
+      csrf = response.cookies["csrftoken"]
 
-            self.login_headers.format(csrftoken=csrf)
+      self.login_headers.format(csrftoken=csrf)
 
 
 # class Story:

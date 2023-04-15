@@ -11,45 +11,46 @@
 # import re
 
 #from antispeedbump.utils import Post
-#Post()
+# Post()
 
 # download driver
+from platform import system
+import os
 from tqdm import tqdm
 
+
 def driver_update(version: str, _os: str, chunk_size: int = 128):
-    import requests
-    from lxml import html
-    #url = "https://chromedriver.storage.googleapis.com/index.html"
-    # 110.0.5481.77
-    #_os = 
-    fn = f"chromedriver_{_os}.zip"
-    url = f"https://chromedriver.storage.googleapis.com/{version}/{fn}"
-    r = requests.get(url, stream=True)
-    with open(fn, 'wb') as f:
-        for chunk in tqdm(r.iter_content(chunk_size=chunk_size)):
-            f.write(chunk)
+  import requests
+  from lxml import html
+  #url = "https://chromedriver.storage.googleapis.com/index.html"
+  # 110.0.5481.77
+  # _os =
+  fn = f"chromedriver_{_os}.zip"
+  url = f"https://chromedriver.storage.googleapis.com/{version}/{fn}"
+  r = requests.get(url, stream=True)
+  with open(fn, 'wb') as f:
+    for chunk in tqdm(r.iter_content(chunk_size=chunk_size)):
+      f.write(chunk)
 
 
 o = {
-        "darwin": "mac",
-        "linux": "linux",
-        "windows": ""
-        }
+  "darwin": "mac",
+  "linux": "linux",
+  "windows": ""
+}
 v = {
-        "arm64": "arm64",
-        "x86_64": "{}64",
-    }
+  "arm64": "arm64",
+  "x86_64": "{}64",
+}
 
-import os
-from platform import system
 _os = f"{o[system().lower()]}_{v[os.uname().machine]}"
 
 driver_update(version="110.0.5481.77",
-              _os = _os
+              _os=_os
               )
 
 
-#from commons import SQL_ALCHEMY_ENGINES, _create_table  
+#from commons import SQL_ALCHEMY_ENGINES, _create_table
 #from commons.models.schemas import Sites
 
 #_create_table("Sites", SQL_ALCHEMY_ENGINES["sites"])
